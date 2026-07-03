@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from datetime import datetime, timezone
 import json
 from pathlib import Path
 
@@ -708,9 +709,387 @@ def make_target_cards(
 
 
 @app.command("run")
-def run() -> None:
+def run(
+    gwas: Path | None = typer.Option(
+        None,
+        "--gwas",
+        help="GWAS summary-statistics file.",
+        dir_okay=False,
+        readable=True,
+    ),
+    genes: Path | None = typer.Option(
+        None,
+        "--genes",
+        help="Gene annotation TSV.",
+        dir_okay=False,
+        readable=True,
+    ),
+    l2g: Path | None = typer.Option(
+        None,
+        "--l2g",
+        help="Optional locus-to-gene score TSV.",
+    ),
+    credible_sets: Path | None = typer.Option(
+        None,
+        "--credible-sets",
+        help="Optional precomputed credible-set TSV.",
+    ),
+    coloc_file: Path | None = typer.Option(
+        None,
+        "--coloc",
+        help="Optional precomputed coloc result TSV.",
+    ),
+    bone_markers: Path | None = typer.Option(
+        None,
+        "--bone-markers",
+        help="Optional bone-cell marker TSV.",
+    ),
+    pathways: Path | None = typer.Option(
+        None,
+        "--pathways",
+        help="Optional pathway gene-set TSV.",
+    ),
+    mr: Path | None = typer.Option(
+        None,
+        "--mr",
+        help="Optional target MR result TSV.",
+    ),
+    mediation: Path | None = typer.Option(
+        None,
+        "--mediation",
+        help="Optional mediation MR result TSV.",
+    ),
+    phe_mr_file: Path | None = typer.Option(
+        None,
+        "--phe-mr",
+        help="Optional Phe-MR safety scan TSV.",
+    ),
+    druggability_file: Path | None = typer.Option(
+        None,
+        "--druggability",
+        help="Optional druggability annotation TSV.",
+    ),
+    config: Path | None = typer.Option(
+        None,
+        "--config",
+        help="Pipeline configuration YAML.",
+        dir_okay=False,
+        readable=True,
+    ),
+    outdir: Path | None = typer.Option(
+        None,
+        "--outdir",
+        help="Trait results output directory.",
+        file_okay=False,
+    ),
+    report_path: Path | None = typer.Option(
+        None,
+        "--report",
+        help="Optional Markdown report output path.",
+        dir_okay=False,
+    ),
+    cards_dir: Path | None = typer.Option(
+        None,
+        "--cards-dir",
+        help="Optional output directory for target evidence cards.",
+        file_okay=False,
+    ),
+) -> None:
     """Run the full target-discovery workflow."""
-    _placeholder("run")
+    if (
+        gwas is None
+        and genes is None
+        and config is None
+        and outdir is None
+        and all(
+            path is None
+            for path in (
+                l2g,
+                credible_sets,
+                coloc_file,
+                bone_markers,
+                pathways,
+                mr,
+                mediation,
+                phe_mr_file,
+                druggability_file,
+                report_path,
+                cards_dir,
+            )
+        )
+    ):
+        _placeholder("run")
+        return
+
+    missing_required = [
+        name
+        for name, value in {
+            "--gwas": gwas,
+            "--genes": genes,
+            "--config": config,
+            "--outdir": outdir,
+        }.items()
+        if value is None
+    ]
+    if missing_required:
+        typer.echo(f"Run requires {', '.join(missing_required)}.", err=True)
+        raise typer.Exit(code=1)
+
+    for label, path in {"--gwas": gwas, "--genes": genes, "--config": config}.items():
+        if path is not None and not path.exists():
+            typer.echo(f"Run input {label} does not exist: {path}", err=True)
+            raise typer.Exit(code=1)
+
+    manifest: dict[str, object] = {
+        "command": "osteo-target-gwas run",
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "input_paths": {
+            "gwas": str(gwas),
+            "genes": str(genes),
+            "l2g": _path_or_none(l2g),
+            "credible_sets": _path_or_none(credible_sets),
+            "coloc": _path_or_none(coloc_file),
+            "bone_markers": _path_or_none(bone_markers),
+            "pathways": _path_or_none(pathways),
+            "mr": _path_or_none(mr),
+            "mediation": _path_or_none(mediation),
+            "phe_mr": _path_or_none(phe_mr_file),
+            "druggability": _path_or_none(druggability_file),
+            "config": str(config),
+            "outdir": str(outdir),
+            "report": _path_or_none(report_path),
+            "cards_dir": _path_or_none(cards_dir),
+        },
+        "output_paths": {},
+        "completed_stages": [],
+        "skipped_stages": [],
+    }
+
+    output_paths = manifest["output_paths"]
+    completed_stages = manifest["completed_stages"]
+    skipped_stages = manifest["skipped_stages"]
+
+    def complete(stage_name: str, outputs: dict[str, str] | None = None) -> None:
+        completed_stages.append(stage_name)
+        if outputs:
+            output_paths.update(outputs)
+
+    def skip(stage_name: str, reason: str) -> None:
+        message = f"Skipping {stage_name}: {reason}"
+        typer.echo(f"WARNING: {message}", err=True)
+        skipped_stages.append({"stage": stage_name, "reason": reason})
+
+    try:
+        _log_stage_start("validate")
+        pipeline_config = load_default_config(config)
+        mappings = pipeline_config.get("column_mappings", {}).get("gwas_summary_statistics", {})
+        rows = read_gwas(gwas, mappings)
+        validation_summary = validate_gwas_schema(rows)
+        schema_validation_path = outdir / "qc" / "schema_validation.json"
+        schema_validation_path.parent.mkdir(parents=True, exist_ok=True)
+        schema_validation_path.write_text(json.dumps(validation_summary, indent=2) + "\n", encoding="utf-8")
+        complete("validate", {"schema_validation": str(schema_validation_path)})
+        _log_stage_done("validate")
+
+        _log_stage_start("qc")
+        qc_result = run_gwas_qc(gwas_path=gwas, outdir=outdir, config_path=config)
+        complete(
+            "qc",
+            {
+                "harmonised_sumstats": qc_result["harmonised_sumstats_path"],
+                "qc_summary": qc_result["qc_summary_path"],
+                "qc_report": qc_result["qc_report_path"],
+            },
+        )
+        _log_stage_done("qc")
+
+        _log_stage_start("define-loci")
+        loci_result = define_significant_loci(
+            gwas_path=qc_result["harmonised_sumstats_path"],
+            outdir=outdir,
+            config_path=config,
+        )
+        complete("define-loci", {"loci": loci_result["loci_path"]})
+        _log_stage_done("define-loci")
+
+        if _optional_input_available("finemap", credible_sets, skip):
+            _log_stage_start("finemap")
+            finemap_result = run_finemap_placeholder(
+                gwas_path=qc_result["harmonised_sumstats_path"],
+                loci_path=loci_result["loci_path"],
+                credible_sets_path=credible_sets,
+                outdir=outdir,
+            )
+            complete(
+                "finemap",
+                {
+                    "credible_sets": finemap_result["credible_sets_path"],
+                    "locus_finemap_summary": finemap_result["locus_finemap_summary_path"],
+                },
+            )
+            _log_stage_done("finemap")
+
+        _log_stage_start("map-genes")
+        gene_result = map_variants_to_genes(
+            loci_path=loci_result["loci_path"],
+            genes_path=genes,
+            l2g_path=l2g if _path_exists(l2g) else None,
+            outdir=outdir,
+        )
+        if l2g is not None and not _path_exists(l2g):
+            skip("l2g-import", f"optional input not found: {l2g}")
+        complete("map-genes", {"locus_gene_map": gene_result["locus_gene_map_path"]})
+        _log_stage_done("map-genes")
+
+        if _optional_input_available("coloc", coloc_file, skip):
+            _log_stage_start("coloc")
+            coloc_result = run_coloc_parser(coloc_path=coloc_file, outdir=outdir)
+            complete(
+                "coloc",
+                {
+                    "coloc_results": coloc_result["coloc_results_path"],
+                    "gene_coloc_summary": coloc_result["gene_coloc_summary_path"],
+                },
+            )
+            _log_stage_done("coloc")
+
+        if _optional_input_available("bone-context", bone_markers, skip):
+            _log_stage_start("bone-context")
+            bone_result = score_bone_cell_context(
+                gene_map_path=gene_result["locus_gene_map_path"],
+                markers_path=bone_markers,
+                outdir=outdir,
+            )
+            complete("bone-context", {"bone_cell_relevance": bone_result["bone_cell_relevance_path"]})
+            _log_stage_done("bone-context")
+
+        if _optional_input_available("pathway", pathways, skip):
+            _log_stage_start("pathway")
+            pathway_result = annotate_pathway_context(
+                gene_map_path=gene_result["locus_gene_map_path"],
+                gene_sets_path=pathways,
+                outdir=outdir,
+            )
+            complete(
+                "pathway",
+                {
+                    "gene_pathway_context": pathway_result["gene_pathway_context_path"],
+                    "pathway_summary": pathway_result["pathway_summary_path"],
+                },
+            )
+            _log_stage_done("pathway")
+
+        if _optional_input_available("mr-targets", mr, skip):
+            _log_stage_start("mr-targets")
+            mr_result = run_target_mr_parser(mr_path=mr, outdir=outdir)
+            complete(
+                "mr-targets",
+                {
+                    "target_mr_results": mr_result["target_mr_results_path"],
+                    "gene_mr_summary": mr_result["gene_mr_summary_path"],
+                },
+            )
+            _log_stage_done("mr-targets")
+
+        if _optional_input_available("mediation-mr", mediation, skip):
+            _log_stage_start("mediation-mr")
+            mediation_result = run_mediation_mr_parser(mediation_path=mediation, outdir=outdir)
+            complete(
+                "mediation-mr",
+                {
+                    "mediation_mr_results": mediation_result["mediation_mr_results_path"],
+                    "gene_mediation_summary": mediation_result["gene_mediation_summary_path"],
+                },
+            )
+            _log_stage_done("mediation-mr")
+
+        if _optional_input_available("phe-mr", phe_mr_file, skip):
+            _log_stage_start("phe-mr")
+            phe_result = run_phe_mr_parser(phe_mr_path=phe_mr_file, outdir=outdir)
+            complete(
+                "phe-mr",
+                {
+                    "phe_mr_results": phe_result["phe_mr_results_path"],
+                    "gene_phe_mr_safety_summary": phe_result["gene_phe_mr_safety_summary_path"],
+                },
+            )
+            _log_stage_done("phe-mr")
+
+        if _optional_input_available("druggability", druggability_file, skip):
+            _log_stage_start("druggability")
+            druggability_result = run_druggability_annotation(
+                druggability_path=druggability_file,
+                outdir=outdir,
+            )
+            complete("druggability", {"druggability": druggability_result["druggability_path"]})
+            _log_stage_done("druggability")
+
+        _log_stage_start("score-targets")
+        scoring_result = run_target_scoring(results_dir=outdir, config_path=config)
+        complete("score-targets", {"ranked_targets": scoring_result["ranked_targets_path"]})
+        _log_stage_done("score-targets")
+
+        if report_path is not None:
+            _log_stage_start("report")
+            report_result = make_markdown_report(results_dir=outdir, out_path=report_path)
+            complete("report", {"report": report_result["report_path"]})
+            _log_stage_done("report")
+        else:
+            skip("report", "optional --report output path was not supplied")
+
+        if cards_dir is not None:
+            _log_stage_start("make-target-cards")
+            cards_result = run_target_cards(results_dir=outdir, outdir=cards_dir, top_n=10)
+            complete("make-target-cards", {"target_cards_dir": str(cards_dir)})
+            output_paths["target_cards"] = cards_result["target_card_paths"]
+            _log_stage_done("make-target-cards")
+        else:
+            skip("make-target-cards", "optional --cards-dir output directory was not supplied")
+
+    except (OSError, TypeError, ValueError, NotImplementedError) as error:
+        _write_run_manifest(outdir, manifest)
+        typer.echo(f"Pipeline failed: {error}", err=True)
+        raise typer.Exit(code=1) from error
+
+    manifest_path = _write_run_manifest(outdir, manifest)
+    typer.echo(json.dumps({"manifest": str(manifest_path), "completed_stages": completed_stages}, indent=2))
+
+
+def _log_stage_start(stage_name: str) -> None:
+    typer.echo(f"Starting {stage_name}")
+
+
+def _log_stage_done(stage_name: str) -> None:
+    typer.echo(f"Completed {stage_name}")
+
+
+def _write_run_manifest(outdir: Path, manifest: dict[str, object]) -> Path:
+    manifest_path = outdir / "run_manifest.json"
+    manifest_path.parent.mkdir(parents=True, exist_ok=True)
+    manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+    return manifest_path
+
+
+def _path_or_none(path: Path | None) -> str | None:
+    return str(path) if path is not None else None
+
+
+def _path_exists(path: Path | None) -> bool:
+    return path is not None and path.exists()
+
+
+def _optional_input_available(
+    stage_name: str,
+    path: Path | None,
+    skip,
+) -> bool:
+    if path is None:
+        skip(stage_name, "optional input was not supplied")
+        return False
+    if not path.exists():
+        skip(stage_name, f"optional input not found: {path}")
+        return False
+    return True
 
 
 if __name__ == "__main__":
