@@ -9,6 +9,7 @@ import typer
 
 from osteo_target_gwas import __version__
 from osteo_target_gwas.biology.bone_cell_context import score_bone_cell_context
+from osteo_target_gwas.biology.pathway import annotate_pathway_context
 from osteo_target_gwas.config import load_default_config
 from osteo_target_gwas.finemap.run_susie_placeholder import run_finemap_placeholder
 from osteo_target_gwas.genes.variant_to_gene import map_variants_to_genes
@@ -414,9 +415,51 @@ def bone_context(
 
 
 @app.command("pathway")
-def pathway() -> None:
+def pathway(
+    gene_map: Path | None = typer.Option(
+        None,
+        "--gene-map",
+        help="Locus-to-gene map TSV.",
+        exists=True,
+        dir_okay=False,
+        readable=True,
+    ),
+    gene_sets: Path | None = typer.Option(
+        None,
+        "--gene-sets",
+        help="Pathway gene-set TSV.",
+        exists=True,
+        dir_okay=False,
+        readable=True,
+    ),
+    outdir: Path = typer.Option(
+        Path("results/example"),
+        "--outdir",
+        help="Trait output directory; pathway files are written under its biology/ subdirectory.",
+        file_okay=False,
+    ),
+) -> None:
     """Interpret pathways and biological mechanisms."""
-    _placeholder("pathway")
+    if gene_map is None and gene_sets is None:
+        _placeholder("pathway")
+        return
+    if gene_map is None or gene_sets is None:
+        typer.echo("Pathway annotation requires --gene-map and --gene-sets.", err=True)
+        raise typer.Exit(code=1)
+
+    try:
+        result = annotate_pathway_context(
+            gene_map_path=gene_map,
+            gene_sets_path=gene_sets,
+            outdir=outdir,
+        )
+    except (OSError, TypeError, ValueError) as error:
+        typer.echo(f"Pathway annotation failed: {error}", err=True)
+        raise typer.Exit(code=1) from error
+
+    typer.echo(json.dumps({"n_genes": result["n_genes"], "n_pathways": result["n_pathways"]}, indent=2))
+    typer.echo(f"Wrote gene pathway context to {result['gene_pathway_context_path']}")
+    typer.echo(f"Wrote pathway summary to {result['pathway_summary_path']}")
 
 
 @app.command("mr-targets")
