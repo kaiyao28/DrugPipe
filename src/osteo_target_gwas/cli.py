@@ -17,6 +17,7 @@ from osteo_target_gwas.io.read_gwas import read_gwas
 from osteo_target_gwas.io.validate_schema import validate_gwas_schema
 from osteo_target_gwas.loci.define_loci import define_significant_loci
 from osteo_target_gwas.mr.mediation import run_mediation_mr_parser
+from osteo_target_gwas.mr.phe_mr import run_phe_mr_parser
 from osteo_target_gwas.mr.target_mr import run_target_mr_parser
 from osteo_target_gwas.qc.filter_sumstats import run_gwas_qc
 from osteo_target_gwas.qtl.coloc import run_coloc_parser
@@ -531,9 +532,36 @@ def mediation_mr(
 
 
 @app.command("phe-mr")
-def phe_mr() -> None:
+def phe_mr(
+    phe_mr_file: Path | None = typer.Option(
+        None,
+        "--phe-mr",
+        help="Precomputed Phe-MR safety scan TSV.",
+        exists=True,
+        dir_okay=False,
+        readable=True,
+    ),
+    outdir: Path = typer.Option(
+        Path("results/example"),
+        "--outdir",
+        help="Trait output directory; Phe-MR files are written under its mr/ subdirectory.",
+        file_okay=False,
+    ),
+) -> None:
     """Run phenome-wide Mendelian randomisation safety scans."""
-    _placeholder("phe-mr")
+    if phe_mr_file is None:
+        _placeholder("phe-mr")
+        return
+
+    try:
+        result = run_phe_mr_parser(phe_mr_path=phe_mr_file, outdir=outdir)
+    except (OSError, TypeError, ValueError) as error:
+        typer.echo(f"Phe-MR parsing failed: {error}", err=True)
+        raise typer.Exit(code=1) from error
+
+    typer.echo(json.dumps({"n_phe_mr_records": result["n_phe_mr_records"], "n_genes": result["n_genes"]}, indent=2))
+    typer.echo(f"Wrote Phe-MR results to {result['phe_mr_results_path']}")
+    typer.echo(f"Wrote gene Phe-MR safety summary to {result['gene_phe_mr_safety_summary_path']}")
 
 
 @app.command("druggability")
