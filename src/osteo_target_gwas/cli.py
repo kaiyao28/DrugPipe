@@ -9,6 +9,7 @@ import typer
 
 from osteo_target_gwas import __version__
 from osteo_target_gwas.config import load_default_config
+from osteo_target_gwas.finemap.run_susie_placeholder import run_finemap_placeholder
 from osteo_target_gwas.io.read_gwas import read_gwas
 from osteo_target_gwas.io.validate_schema import validate_gwas_schema
 from osteo_target_gwas.loci.define_loci import define_significant_loci
@@ -214,9 +215,63 @@ def define_loci(
 
 
 @app.command("finemap")
-def finemap() -> None:
+def finemap(
+    gwas: Path | None = typer.Option(
+        None,
+        "--gwas",
+        help="Harmonised GWAS summary-statistics file.",
+        exists=True,
+        dir_okay=False,
+        readable=True,
+    ),
+    loci: Path | None = typer.Option(
+        None,
+        "--loci",
+        help="Locus definition TSV.",
+        exists=True,
+        dir_okay=False,
+        readable=True,
+    ),
+    credible_sets: Path | None = typer.Option(
+        None,
+        "--credible-sets",
+        help="Precomputed credible-set TSV.",
+        exists=True,
+        dir_okay=False,
+        readable=True,
+    ),
+    outdir: Path = typer.Option(
+        Path("results/example"),
+        "--outdir",
+        help="Trait output directory; fine-mapping files are written under its finemap/ subdirectory.",
+        file_okay=False,
+    ),
+) -> None:
     """Prepare fine-mapping-ready credible-set inputs."""
-    _placeholder("finemap")
+    if gwas is None and loci is None and credible_sets is None:
+        _placeholder("finemap")
+        return
+    if gwas is None or loci is None:
+        typer.echo("Fine-mapping requires --gwas and --loci.", err=True)
+        raise typer.Exit(code=1)
+
+    try:
+        result = run_finemap_placeholder(
+            gwas_path=gwas,
+            loci_path=loci,
+            outdir=outdir,
+            credible_sets_path=credible_sets,
+        )
+    except NotImplementedError as error:
+        typer.echo(str(error), err=True)
+        raise typer.Exit(code=1) from error
+    except (OSError, TypeError, ValueError) as error:
+        typer.echo(f"Fine-mapping failed: {error}", err=True)
+        raise typer.Exit(code=1) from error
+
+    typer.echo(json.dumps({"n_loci": result["n_loci"], "n_credible_set_variants": result["n_credible_set_variants"]}, indent=2))
+    typer.echo(f"Wrote credible sets to {result['credible_sets_path']}")
+    typer.echo(f"Wrote locus fine-mapping summary to {result['locus_finemap_summary_path']}")
 
 
 @app.command("map-genes")
