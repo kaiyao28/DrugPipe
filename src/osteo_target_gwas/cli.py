@@ -21,6 +21,7 @@ from osteo_target_gwas.mr.phe_mr import run_phe_mr_parser
 from osteo_target_gwas.mr.target_mr import run_target_mr_parser
 from osteo_target_gwas.qc.filter_sumstats import run_gwas_qc
 from osteo_target_gwas.qtl.coloc import run_coloc_parser
+from osteo_target_gwas.report.make_report import make_markdown_report
 from osteo_target_gwas.targets.druggability import run_druggability_annotation
 from osteo_target_gwas.targets.score import score_targets as run_target_scoring
 
@@ -634,9 +635,36 @@ def score_targets(
 
 
 @app.command("report")
-def report() -> None:
+def report(
+    results: Path | None = typer.Option(
+        None,
+        "--results",
+        help="Trait results directory containing pipeline evidence outputs.",
+        file_okay=False,
+    ),
+    out: Path | None = typer.Option(
+        None,
+        "--out",
+        help="Markdown report output path.",
+        dir_okay=False,
+    ),
+) -> None:
     """Build pipeline-level reports."""
-    _placeholder("report")
+    if results is None and out is None:
+        _placeholder("report")
+        return
+    if results is None or out is None:
+        typer.echo("Report generation requires --results and --out.", err=True)
+        raise typer.Exit(code=1)
+
+    try:
+        result = make_markdown_report(results_dir=results, out_path=out)
+    except (OSError, TypeError, ValueError) as error:
+        typer.echo(f"Report generation failed: {error}", err=True)
+        raise typer.Exit(code=1) from error
+
+    typer.echo(json.dumps({"n_ranked_targets": result["n_ranked_targets"]}, indent=2))
+    typer.echo(f"Wrote report to {result['report_path']}")
 
 
 @app.command("make-target-cards")
