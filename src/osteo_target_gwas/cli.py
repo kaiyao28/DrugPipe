@@ -15,6 +15,7 @@ from osteo_target_gwas.io.read_gwas import read_gwas
 from osteo_target_gwas.io.validate_schema import validate_gwas_schema
 from osteo_target_gwas.loci.define_loci import define_significant_loci
 from osteo_target_gwas.qc.filter_sumstats import run_gwas_qc
+from osteo_target_gwas.qtl.coloc import run_coloc_parser
 
 app = typer.Typer(
     help=(
@@ -332,9 +333,36 @@ def map_genes(
 
 
 @app.command("coloc")
-def coloc() -> None:
+def coloc(
+    coloc_file: Path | None = typer.Option(
+        None,
+        "--coloc",
+        help="Precomputed QTL colocalisation result TSV.",
+        exists=True,
+        dir_okay=False,
+        readable=True,
+    ),
+    outdir: Path = typer.Option(
+        Path("results/example"),
+        "--outdir",
+        help="Trait output directory; coloc files are written under its qtl/ subdirectory.",
+        file_okay=False,
+    ),
+) -> None:
     """Collect QTL colocalisation evidence."""
-    _placeholder("coloc")
+    if coloc_file is None:
+        _placeholder("coloc")
+        return
+
+    try:
+        result = run_coloc_parser(coloc_path=coloc_file, outdir=outdir)
+    except (OSError, TypeError, ValueError) as error:
+        typer.echo(f"Colocalisation parsing failed: {error}", err=True)
+        raise typer.Exit(code=1) from error
+
+    typer.echo(json.dumps({"n_coloc_records": result["n_coloc_records"], "n_genes": result["n_genes"]}, indent=2))
+    typer.echo(f"Wrote coloc results to {result['coloc_results_path']}")
+    typer.echo(f"Wrote gene coloc summary to {result['gene_coloc_summary_path']}")
 
 
 @app.command("bone-context")
