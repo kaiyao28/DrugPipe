@@ -10,6 +10,7 @@ import typer
 from osteo_target_gwas import __version__
 from osteo_target_gwas.config import load_default_config
 from osteo_target_gwas.finemap.run_susie_placeholder import run_finemap_placeholder
+from osteo_target_gwas.genes.variant_to_gene import map_variants_to_genes
 from osteo_target_gwas.io.read_gwas import read_gwas
 from osteo_target_gwas.io.validate_schema import validate_gwas_schema
 from osteo_target_gwas.loci.define_loci import define_significant_loci
@@ -275,9 +276,59 @@ def finemap(
 
 
 @app.command("map-genes")
-def map_genes() -> None:
+def map_genes(
+    loci: Path | None = typer.Option(
+        None,
+        "--loci",
+        help="Locus definition TSV.",
+        exists=True,
+        dir_okay=False,
+        readable=True,
+    ),
+    genes: Path | None = typer.Option(
+        None,
+        "--genes",
+        help="Gene annotation TSV.",
+        exists=True,
+        dir_okay=False,
+        readable=True,
+    ),
+    l2g: Path | None = typer.Option(
+        None,
+        "--l2g",
+        help="Optional precomputed locus-to-gene score TSV.",
+        exists=True,
+        dir_okay=False,
+        readable=True,
+    ),
+    outdir: Path = typer.Option(
+        Path("results/example"),
+        "--outdir",
+        help="Trait output directory; gene mapping files are written under its genes/ subdirectory.",
+        file_okay=False,
+    ),
+) -> None:
     """Map variants and loci to candidate genes."""
-    _placeholder("map-genes")
+    if loci is None and genes is None and l2g is None:
+        _placeholder("map-genes")
+        return
+    if loci is None or genes is None:
+        typer.echo("Gene mapping requires --loci and --genes.", err=True)
+        raise typer.Exit(code=1)
+
+    try:
+        result = map_variants_to_genes(
+            loci_path=loci,
+            genes_path=genes,
+            l2g_path=l2g,
+            outdir=outdir,
+        )
+    except (OSError, TypeError, ValueError) as error:
+        typer.echo(f"Gene mapping failed: {error}", err=True)
+        raise typer.Exit(code=1) from error
+
+    typer.echo(json.dumps({"n_loci": result["n_loci"], "n_gene_links": result["n_gene_links"]}, indent=2))
+    typer.echo(f"Wrote locus-to-gene map to {result['locus_gene_map_path']}")
 
 
 @app.command("coloc")

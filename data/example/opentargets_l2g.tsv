@@ -1,0 +1,7 @@
+locus_id	gene_name	l2g_score	l2g_evidence_type
+chr1:150270000-151270000	CTSK	0.86	distance_qtl_chromatin
+chr7:120470000-121475500	WNT16	0.88	distance_qtl_chromatin
+chr8:119445000-120445000	TNFRSF11B	0.82	distance_qtl_chromatin
+chr11:67684000-68689500	LRP5	0.91	distance_qtl_chromatin
+chr13:42624000-43624000	TNFSF11	0.79	distance_qtl_chromatin
+chr17:43390000-44394500	SOST	0.93	distance_qtl_chromatin
