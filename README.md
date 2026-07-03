@@ -20,6 +20,29 @@ The Python package and command-line entry point are named `osteo-target-gwas`:
 osteo-target-gwas --help
 ```
 
+## Quickstart
+
+```bash
+git clone https://github.com/kaiyao28/DrugPipe.git
+cd DrugPipe
+
+python -m venv .venv
+source .venv/bin/activate
+
+python -m pip install --upgrade pip
+pip install -e .
+pip install pytest
+pytest
+make example
+```
+
+The example writes outputs to:
+
+```text
+results/example/
+reports/example/
+```
+
 ## What DrugPipe Does
 
 GWAS can identify genomic regions associated with osteoporosis or bone mineral
@@ -48,7 +71,7 @@ from raw inputs. Those stages currently expect precomputed result tables.
 ## Installation
 
 ```bash
-pip install -e .
+make install
 ```
 
 Check the CLI:
@@ -60,13 +83,19 @@ osteo-target-gwas --help
 Run tests:
 
 ```bash
-pytest
+make test
 ```
 
 ## Run The Example
 
 The example uses small synthetic files in `data/example/`. These are not
 individual-level data.
+
+```bash
+make example
+```
+
+The expanded command is:
 
 ```bash
 osteo-target-gwas run \
@@ -132,6 +161,23 @@ reports/example/
   target_cards/
     <GENE_NAME>.md
 ```
+
+## Example Ranked Targets
+
+After running the example, inspect:
+
+```bash
+head results/example/targets/ranked_targets.tsv
+```
+
+The ranked-target table contains one row per candidate target, with scores from
+genetic, molecular, biological, MR, safety and druggability evidence.
+
+| rank | gene_name | target_score | top_cell_context | evidence_summary |
+| ---: | --- | ---: | --- | --- |
+| 1 | SOST | 0.650 | osteocyte | genetic association; fine-mapping; QTL colocalisation; bone-cell context; MR support; druggability |
+| 2 | WNT16 | 0.542 | mesenchymal_stromal_cell | genetic association; fine-mapping; QTL colocalisation; bone-cell context; MR support; druggability |
+| 3 | CTSK | 0.511 | osteoclast | genetic association; fine-mapping; QTL colocalisation; bone-cell context; druggability; safety signal |
 
 ## Target Scoring
 
@@ -199,6 +245,25 @@ osteo-target-gwas make-target-cards \
 To move beyond the synthetic example, replace the files in `data/example/` with
 public or internal summary-level resources that follow the documented schemas.
 
+Required inputs for the end-to-end command are only `--gwas`, `--genes`,
+`--config`, and `--outdir`. Optional evidence layers are skipped with warnings
+when they are not supplied.
+
+## Input File Schemas
+
+| File | Required? | Key columns |
+| --- | ---: | --- |
+| GWAS summary statistics | yes | `SNP`, `CHR`, `BP`, `A1`, `A2`, `BETA`, `SE`, `P`, `EAF`, `N` |
+| Gene annotation | yes | `gene_id`, `gene_name`, `chr`, `start`, `end`, `tss` |
+| L2G scores | no | `locus_id`, `gene_name`, `l2g_score` |
+| Credible sets | no | `locus_id`, `SNP`, `PIP`, `credible_set` |
+| Coloc results | no | `locus_id`, `gene_name`, `pp_h4`, `qtl_type` |
+| Bone markers | no | `gene_name`, `cell_type`, `marker_strength` |
+| Pathways | no | `pathway_name`, `gene_name` |
+| MR results | no | `gene_name`, `beta`, `se`, `p`, `f_statistic` |
+| Phe-MR results | no | `gene_name`, `outcome_trait`, `p`, `safety_flag` |
+| Druggability | no | `gene_name`, `tractability_score`, `known_drug` |
+
 Typical inputs include:
 
 | Evidence layer | Example input |
@@ -215,6 +280,23 @@ Typical inputs include:
 | Druggability | Target class, modality, known drug, and safety annotations |
 
 Expected external resources are documented in `config/data_sources.yaml`.
+
+## Project Structure
+
+```text
+src/osteo_target_gwas/
+  qc/          GWAS QC and harmonisation
+  loci/        significant locus definition
+  genes/       locus-to-gene mapping
+  qtl/         colocalisation evidence parsing
+  biology/     bone-cell and pathway context
+  mr/          MR, mediation and safety evidence parsing
+  targets/     druggability and target scoring
+  report/      reports and target cards
+data/example/  synthetic example inputs
+config/        default settings and data-source registry
+tests/         pytest suite
+```
 
 ## Caveats
 
