@@ -8,6 +8,7 @@ from pathlib import Path
 import typer
 
 from osteo_target_gwas import __version__
+from osteo_target_gwas.biology.bone_cell_context import score_bone_cell_context
 from osteo_target_gwas.config import load_default_config
 from osteo_target_gwas.finemap.run_susie_placeholder import run_finemap_placeholder
 from osteo_target_gwas.genes.variant_to_gene import map_variants_to_genes
@@ -366,9 +367,50 @@ def coloc(
 
 
 @app.command("bone-context")
-def bone_context() -> None:
+def bone_context(
+    gene_map: Path | None = typer.Option(
+        None,
+        "--gene-map",
+        help="Locus-to-gene map TSV.",
+        exists=True,
+        dir_okay=False,
+        readable=True,
+    ),
+    markers: Path | None = typer.Option(
+        None,
+        "--markers",
+        help="Bone-cell marker TSV.",
+        exists=True,
+        dir_okay=False,
+        readable=True,
+    ),
+    outdir: Path = typer.Option(
+        Path("results/example"),
+        "--outdir",
+        help="Trait output directory; cell-context files are written under its cell_context/ subdirectory.",
+        file_okay=False,
+    ),
+) -> None:
     """Add bone-cell and tissue-context evidence."""
-    _placeholder("bone-context")
+    if gene_map is None and markers is None:
+        _placeholder("bone-context")
+        return
+    if gene_map is None or markers is None:
+        typer.echo("Bone-cell context scoring requires --gene-map and --markers.", err=True)
+        raise typer.Exit(code=1)
+
+    try:
+        result = score_bone_cell_context(
+            gene_map_path=gene_map,
+            markers_path=markers,
+            outdir=outdir,
+        )
+    except (OSError, TypeError, ValueError) as error:
+        typer.echo(f"Bone-cell context scoring failed: {error}", err=True)
+        raise typer.Exit(code=1) from error
+
+    typer.echo(json.dumps({"n_genes": result["n_genes"]}, indent=2))
+    typer.echo(f"Wrote bone-cell relevance to {result['bone_cell_relevance_path']}")
 
 
 @app.command("pathway")
