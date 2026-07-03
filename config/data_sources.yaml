@@ -94,7 +94,7 @@ data_sources:
     url_placeholder: https://example.org/ld-reference-panel
     licence_note: Confirm access controls and permitted downstream use for genotype-derived resources.
     local_path: data/reference/ld_panel/
-  - name: Open Targets evidence
+  - name: Target evidence
     description: Target-disease evidence and target annotation records for osteoporosis-related prioritisation.
     expected_file_format: Parquet, JSONL, TSV, or compressed equivalent.
     required_columns:
@@ -106,9 +106,9 @@ data_sources:
       - datasource
       - publication_id
       - evidence_url
-    url_placeholder: https://example.org/open-targets-evidence
+    url_placeholder: https://example.org/target-evidence
     licence_note: Check the source release licence and attribution requirements before redistribution.
-    local_path: data/external/open_targets/evidence.parquet
+    local_path: data/external/target_evidence/evidence.parquet
   - name: eQTL resources
     description: Expression QTL summary statistics for colocalisation with GWAS loci.
     expected_file_format: TSV, Parquet, or compressed summary-statistic files.

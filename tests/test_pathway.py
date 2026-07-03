@@ -12,7 +12,7 @@ from osteo_target_gwas.qc.filter_sumstats import run_gwas_qc
 
 EXAMPLE_GWAS = Path("data/example/example_gwas.tsv")
 EXAMPLE_GENES = Path("data/example/gene_annotation.tsv")
-EXAMPLE_L2G = Path("data/example/opentargets_l2g.tsv")
+EXAMPLE_L2G = Path("data/example/l2g_scores.tsv")
 EXAMPLE_GENE_SETS = Path("data/example/pathway_gene_sets.tsv")
 
 

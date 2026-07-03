@@ -21,7 +21,7 @@ from osteo_target_gwas.targets.score import score_targets
 EXAMPLE_GWAS = Path("data/example/example_gwas.tsv")
 EXAMPLE_CREDIBLE_SETS = Path("data/example/credible_sets.tsv")
 EXAMPLE_GENES = Path("data/example/gene_annotation.tsv")
-EXAMPLE_L2G = Path("data/example/opentargets_l2g.tsv")
+EXAMPLE_L2G = Path("data/example/l2g_scores.tsv")
 EXAMPLE_COLOC = Path("data/example/coloc_results.tsv")
 EXAMPLE_MARKERS = Path("data/example/bone_cell_markers.tsv")
 EXAMPLE_GENE_SETS = Path("data/example/pathway_gene_sets.tsv")

@@ -20,7 +20,7 @@ def test_full_run_completes_on_example_data(tmp_path: Path) -> None:
             "--genes",
             "data/example/gene_annotation.tsv",
             "--l2g",
-            "data/example/opentargets_l2g.tsv",
+            "data/example/l2g_scores.tsv",
             "--credible-sets",
             "data/example/credible_sets.tsv",
             "--coloc",

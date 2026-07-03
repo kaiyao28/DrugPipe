@@ -68,7 +68,7 @@ Key example files include:
 osteo-target-gwas run \
   --gwas data/example/example_gwas.tsv \
   --genes data/example/gene_annotation.tsv \
-  --l2g data/example/opentargets_l2g.tsv \
+  --l2g data/example/l2g_scores.tsv \
   --credible-sets data/example/credible_sets.tsv \
   --coloc data/example/coloc_results.tsv \
   --bone-markers data/example/bone_cell_markers.tsv \
@@ -194,7 +194,7 @@ Map genes and parse evidence layers:
 osteo-target-gwas map-genes \
   --loci results/example/loci/loci.tsv \
   --genes data/example/gene_annotation.tsv \
-  --l2g data/example/opentargets_l2g.tsv \
+  --l2g data/example/l2g_scores.tsv \
   --outdir results/example
 
 osteo-target-gwas coloc \

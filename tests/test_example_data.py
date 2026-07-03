@@ -7,7 +7,7 @@ EXAMPLE_DIR = Path("data/example")
 REQUIRED_COLUMNS = {
     "example_gwas.tsv": ["SNP", "CHR", "BP", "A1", "A2", "BETA", "SE", "P", "EAF", "N", "INFO"],
     "gene_annotation.tsv": ["gene_id", "gene_name", "chr", "start", "end", "tss", "strand", "gene_type"],
-    "opentargets_evidence.tsv": [
+    "target_evidence.tsv": [
         "gene_id",
         "gene_name",
         "disease_name",
