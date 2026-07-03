@@ -2,9 +2,9 @@
 
 ![DrugPipe banner](docs/assets/drugpipe-banner.svg)
 
+[![Tests](https://github.com/kaiyao28/DrugPipe/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/kaiyao28/DrugPipe/actions/workflows/tests.yml)
 ![Python](https://img.shields.io/badge/python-3.10%2B-334155)
 ![CLI](https://img.shields.io/badge/CLI-osteo--target--gwas-0f766e)
-![Tests](https://img.shields.io/badge/tests-pytest-2563eb)
 ![Status](https://img.shields.io/badge/status-local--file%20MVP-b45309)
 
 DrugPipe is a lightweight local-file pipeline for post-GWAS target prioritisation
