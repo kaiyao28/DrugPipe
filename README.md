@@ -1,17 +1,49 @@
 # DrugPipe
 
-DrugPipe is a Python package for a reproducible osteoporosis post-GWAS
-target-discovery workflow. It starts from osteoporosis, bone mineral density, or
-fracture GWAS summary statistics and builds prioritised target evidence using
-QC, locus definition, fine-mapping-ready credible sets, variant-to-gene mapping,
-QTL colocalisation, bone-cell context, pathway interpretation, Mendelian
-randomisation, safety scanning, druggability annotation, target scoring, reports,
-and target evidence cards.
+![DrugPipe banner](docs/assets/drugpipe-banner.svg)
 
-The current implementation is designed around local files and precomputed
-evidence tables. It does not yet run real fine-mapping, colocalisation, or
-Mendelian randomisation engines; those stages parse validated precomputed
-results.
+![Python](https://img.shields.io/badge/python-3.10%2B-334155)
+![CLI](https://img.shields.io/badge/CLI-osteo--target--gwas-0f766e)
+![Tests](https://img.shields.io/badge/tests-pytest-2563eb)
+![Status](https://img.shields.io/badge/status-local--file%20MVP-b45309)
+
+DrugPipe is a lightweight local-file pipeline for post-GWAS target prioritisation
+in osteoporosis, bone mineral density and fracture-risk studies.
+
+It starts from GWAS summary statistics, combines genetic and biological evidence,
+and produces ranked candidate drug targets plus Markdown reports and target
+evidence cards.
+
+The Python package and command-line entry point are named `osteo-target-gwas`:
+
+```bash
+osteo-target-gwas --help
+```
+
+## What DrugPipe Does
+
+GWAS can identify genomic regions associated with osteoporosis or bone mineral
+density, but a GWAS hit does not directly identify the causal gene, the relevant
+bone cell type, druggability, or possible safety liabilities.
+
+DrugPipe organises these evidence layers into one reproducible workflow:
+
+![DrugPipe workflow](docs/assets/drugpipe-workflow.svg)
+
+The output is a ranked list of target hypotheses for follow-up. It is not proof
+that a target is causal, safe, or clinically actionable.
+
+## Current Status
+
+DrugPipe currently works with local input files and precomputed evidence tables.
+
+It can validate and QC GWAS summary statistics, define significant loci, parse
+precomputed credible sets, map loci to genes, parse precomputed QTL
+colocalisation and Mendelian randomisation evidence, score bone-cell and pathway
+context, annotate druggability, rank targets, and generate Markdown reports.
+
+It does not yet run full external fine-mapping, colocalisation, or MR engines
+from raw inputs. Those stages currently expect precomputed result tables.
 
 ## Installation
 
@@ -19,50 +51,22 @@ results.
 pip install -e .
 ```
 
-## CLI
+Check the CLI:
 
 ```bash
 osteo-target-gwas --help
 ```
 
-Implemented commands:
+Run tests:
 
-- `validate`
-- `qc`
-- `define-loci`
-- `finemap`
-- `map-genes`
-- `coloc`
-- `bone-context`
-- `pathway`
-- `mr-targets`
-- `mediation-mr`
-- `phe-mr`
-- `druggability`
-- `score-targets`
-- `report`
-- `make-target-cards`
-- `run`
+```bash
+pytest
+```
 
-## Example Data
+## Run The Example
 
-Synthetic example inputs are provided under `data/example/`. These are not
+The example uses small synthetic files in `data/example/`. These are not
 individual-level data.
-
-Key example files include:
-
-- `example_gwas.tsv`
-- `gene_annotation.tsv`
-- `credible_sets.tsv`
-- `coloc_results.tsv`
-- `bone_cell_markers.tsv`
-- `pathway_gene_sets.tsv`
-- `mr_results.tsv`
-- `mediation_mr_results.tsv`
-- `phe_mr_results.tsv`
-- `druggability.tsv`
-
-## End-To-End Run
 
 ```bash
 osteo-target-gwas run \
@@ -83,38 +87,16 @@ osteo-target-gwas run \
   --cards-dir reports/example/target_cards
 ```
 
-Required inputs for `run` are `--gwas`, `--genes`, `--config`, and `--outdir`.
-Optional evidence inputs are skipped with warnings if absent.
-
-The run command executes:
-
-1. `validate`
-2. `qc`
-3. `define-loci`
-4. `finemap`
-5. `map-genes`
-6. `coloc`
-7. `bone-context`
-8. `pathway`
-9. `mr-targets`
-10. `mediation-mr`
-11. `phe-mr`
-12. `druggability`
-13. `score-targets`
-14. `report`
-15. `make-target-cards`
-
-It writes `results/example/run_manifest.json` with command metadata, inputs,
-outputs, completed stages, and skipped stages.
+Required inputs are `--gwas`, `--genes`, `--config`, and `--outdir`. Optional
+evidence files are skipped with warnings when they are not supplied.
 
 ## Main Outputs
 
-Pipeline outputs are written under the selected results directory:
+After a successful run, the main results are:
 
 ```text
 results/example/
   qc/
-    schema_validation.json
     harmonised_sumstats.tsv.gz
     qc_summary.json
     qc_report.md
@@ -126,7 +108,6 @@ results/example/
   genes/
     locus_gene_map.tsv
   qtl/
-    coloc_results.tsv
     gene_coloc_summary.tsv
   cell_context/
     bone_cell_relevance.tsv
@@ -134,11 +115,8 @@ results/example/
     gene_pathway_context.tsv
     pathway_summary.tsv
   mr/
-    target_mr_results.tsv
     gene_mr_summary.tsv
-    mediation_mr_results.tsv
     gene_mediation_summary.tsv
-    phe_mr_results.tsv
     gene_phe_mr_safety_summary.tsv
   targets/
     druggability.tsv
@@ -146,7 +124,7 @@ results/example/
   run_manifest.json
 ```
 
-Report outputs are written wherever requested:
+Report outputs are written to:
 
 ```text
 reports/example/
@@ -155,9 +133,31 @@ reports/example/
     <GENE_NAME>.md
 ```
 
+## Target Scoring
+
+DrugPipe combines evidence from several layers:
+
+```text
+target score =
+    genetic association evidence
+  + fine-mapping evidence
+  + locus-to-gene evidence
+  + QTL colocalisation evidence
+  + bone-cell context
+  + pathway context
+  + MR target-validation evidence
+  + druggability evidence
+  - safety penalty
+  - annotation-bias penalty
+```
+
+The scoring weights are defined in `config/default.yaml`. The score is intended
+to rank target hypotheses for follow-up, not to make causal claims.
+
 ## Individual Commands
 
-Validate and QC GWAS summary statistics:
+Most users should start with the end-to-end `run` command. The main individual
+commands are useful for debugging or rerunning one stage:
 
 ```bash
 osteo-target-gwas validate \
@@ -167,74 +167,19 @@ osteo-target-gwas validate \
 osteo-target-gwas qc \
   --gwas data/example/example_gwas.tsv \
   --outdir results/example \
-  --min-info 0.8 \
-  --min-maf 0.01 \
-  --remove-ambiguous
-```
+  --config config/default.yaml
 
-Define loci and parse fine-mapping-ready credible sets:
-
-```bash
 osteo-target-gwas define-loci \
   --gwas results/example/qc/harmonised_sumstats.tsv.gz \
   --outdir results/example \
-  --p-threshold 5e-8 \
-  --window-kb 500
+  --config config/default.yaml
 
-osteo-target-gwas finemap \
-  --gwas results/example/qc/harmonised_sumstats.tsv.gz \
-  --loci results/example/loci/loci.tsv \
-  --credible-sets data/example/credible_sets.tsv \
-  --outdir results/example
-```
-
-Map genes and parse evidence layers:
-
-```bash
 osteo-target-gwas map-genes \
   --loci results/example/loci/loci.tsv \
   --genes data/example/gene_annotation.tsv \
   --l2g data/example/l2g_scores.tsv \
   --outdir results/example
 
-osteo-target-gwas coloc \
-  --coloc data/example/coloc_results.tsv \
-  --outdir results/example
-
-osteo-target-gwas bone-context \
-  --gene-map results/example/genes/locus_gene_map.tsv \
-  --markers data/example/bone_cell_markers.tsv \
-  --outdir results/example
-
-osteo-target-gwas pathway \
-  --gene-map results/example/genes/locus_gene_map.tsv \
-  --gene-sets data/example/pathway_gene_sets.tsv \
-  --outdir results/example
-```
-
-Parse MR, safety, and druggability evidence:
-
-```bash
-osteo-target-gwas mr-targets \
-  --mr data/example/mr_results.tsv \
-  --outdir results/example
-
-osteo-target-gwas mediation-mr \
-  --mediation data/example/mediation_mr_results.tsv \
-  --outdir results/example
-
-osteo-target-gwas phe-mr \
-  --phe-mr data/example/phe_mr_results.tsv \
-  --outdir results/example
-
-osteo-target-gwas druggability \
-  --druggability data/example/druggability.tsv \
-  --outdir results/example
-```
-
-Score targets and generate narrative outputs:
-
-```bash
 osteo-target-gwas score-targets \
   --results results/example \
   --config config/default.yaml
@@ -249,20 +194,54 @@ osteo-target-gwas make-target-cards \
   --outdir reports/example/target_cards
 ```
 
-## Configuration
+## Using Real Data
 
-Default settings are in `config/default.yaml`, including:
+To move beyond the synthetic example, replace the files in `data/example/` with
+public or internal summary-level resources that follow the documented schemas.
 
-- GWAS column mappings
-- QC thresholds
-- locus definition settings
-- target scoring weights
-- safety and annotation-bias penalties
+Typical inputs include:
 
-Expected external data resources are documented in `config/data_sources.yaml`.
+| Evidence layer | Example input |
+| --- | --- |
+| GWAS | Osteoporosis, BMD, or fracture GWAS summary statistics |
+| Genes | Ensembl or GENCODE gene annotation |
+| Fine-mapping | Precomputed credible sets with PIP values |
+| QTL evidence | Precomputed eQTL, sQTL, pQTL, caQTL, or other colocalisation results |
+| Cell context | Bone-cell marker or expression table |
+| Pathways | Reactome, GO, KEGG, or custom bone-remodelling gene sets |
+| MR | Precomputed target MR results |
+| Mediation MR | Mediator evidence such as BMI, diabetes, immune, or lipid traits |
+| Phe-MR | Phenome-wide safety scan results |
+| Druggability | Target class, modality, known drug, and safety annotations |
 
-## Testing
+Expected external resources are documented in `config/data_sources.yaml`.
 
-```bash
-pytest
+## Caveats
+
+DrugPipe is for research prioritisation only.
+
+A high-ranking target is not automatically causal, safe, or therapeutically
+useful. Interpretation depends on the quality of the input evidence.
+
+Key limitations:
+
+- nearest-gene mapping is weak by itself;
+- fine-mapping depends on ancestry-matched LD;
+- colocalisation depends on tissue relevance and QTL quality;
+- MR depends on valid genetic instruments;
+- Phe-MR safety scans are incomplete;
+- druggability does not guarantee therapeutic feasibility;
+- all results require biological and experimental validation.
+
+## Roadmap
+
+Planned improvements:
+
+```text
+v0.1  Local-file MVP with example data and reports
+v0.2  Better fine-mapping integration
+v0.3  Direct colocalisation wrappers
+v0.4  Richer bone-cell and single-cell context
+v0.5  Additional public target-annotation integrations
+v0.6  Workflow-manager wrapper
 ```

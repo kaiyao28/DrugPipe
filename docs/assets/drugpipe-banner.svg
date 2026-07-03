@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="360" viewBox="0 0 1280 360" role="img" aria-labelledby="title desc">
+  <title id="title">DrugPipe banner</title>
+  <desc id="desc">A visual banner for DrugPipe, a post-GWAS target-prioritisation pipeline.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#101827"/>
+      <stop offset="0.48" stop-color="#173042"/>
+      <stop offset="1" stop-color="#2b4a45"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#7dd3fc"/>
+      <stop offset="0.5" stop-color="#a7f3d0"/>
+      <stop offset="1" stop-color="#fde68a"/>
+    </linearGradient>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#000000" flood-opacity="0.26"/>
+    </filter>
+  </defs>
+
+  <rect width="1280" height="360" fill="url(#bg)"/>
+  <path d="M0 292 C170 248 298 334 456 278 C632 216 746 245 889 190 C1039 132 1148 153 1280 95 L1280 360 L0 360 Z" fill="#f8fafc" opacity="0.08"/>
+  <path d="M0 248 C188 202 306 262 472 221 C622 184 734 105 892 122 C1031 137 1144 91 1280 58" fill="none" stroke="url(#accent)" stroke-width="4" opacity="0.65"/>
+
+  <g transform="translate(94 70)">
+    <text x="0" y="76" font-family="Inter, Arial, sans-serif" font-size="70" font-weight="800" fill="#f8fafc" letter-spacing="0">DrugPipe</text>
+    <text x="2" y="122" font-family="Inter, Arial, sans-serif" font-size="25" fill="#cbd5e1">Post-GWAS target prioritisation for osteoporosis genetics</text>
+    <text x="2" y="170" font-family="Inter, Arial, sans-serif" font-size="18" fill="#a7f3d0">GWAS QC | loci | genes | QTL | bone context | MR | druggability | evidence cards</text>
+  </g>
+
+  <g transform="translate(760 58)" filter="url(#softShadow)">
+    <rect x="0" y="0" width="396" height="244" rx="18" fill="#f8fafc" opacity="0.96"/>
+    <text x="30" y="48" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700" fill="#10202f">Evidence layers</text>
+
+    <g font-family="Inter, Arial, sans-serif" font-size="15" fill="#243447">
+      <circle cx="42" cy="86" r="7" fill="#38bdf8"/>
+      <text x="62" y="91">Genome-wide association</text>
+      <circle cx="42" cy="122" r="7" fill="#34d399"/>
+      <text x="62" y="127">Variant-to-gene mapping</text>
+      <circle cx="42" cy="158" r="7" fill="#fbbf24"/>
+      <text x="62" y="163">Molecular and cell context</text>
+      <circle cx="42" cy="194" r="7" fill="#f472b6"/>
+      <text x="62" y="199">MR, safety and tractability</text>
+    </g>
+
+    <path d="M286 74 L333 121 L286 168" fill="none" stroke="#0f766e" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>
