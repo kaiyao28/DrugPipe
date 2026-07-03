@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1180" height="520" viewBox="0 0 1180 520" role="img" aria-labelledby="title desc">
   <title id="title">DrugPipe workflow</title>
-  <desc id="desc">Workflow from GWAS summary statistics through QC, loci, candidate genes, evidence integration, ranked targets, and reports.</desc>
+  <desc id="desc">GWAS inputs flow through QC, loci, candidate genes, evidence integration, ranked targets, and reports. Evidence layers feed into evidence integration.</desc>
   <defs>
     <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
       <path d="M0 0 L10 5 L0 10 Z" fill="#64748b"/>
@@ -10,96 +10,106 @@
       .primary { fill: #ecfeff; stroke: #0891b2; }
       .evidence { fill: #f0fdf4; stroke: #16a34a; }
       .output { fill: #fffbeb; stroke: #d97706; }
-      .label { font: 700 16px Inter, Arial, sans-serif; fill: #0f172a; }
-      .sub { font: 13px Inter, Arial, sans-serif; fill: #475569; }
-      .chip { font: 700 14px Inter, Arial, sans-serif; fill: #14532d; }
+      .label { font: 700 15px Inter, Arial, sans-serif; fill: #0f172a; }
+      .sub { font: 12.5px Inter, Arial, sans-serif; fill: #475569; }
+      .evidence-label { font: 700 14px Inter, Arial, sans-serif; fill: #14532d; }
       .line { stroke: #64748b; stroke-width: 2; fill: none; marker-end: url(#arrow); }
-      .softline { stroke: #94a3b8; stroke-width: 1.8; fill: none; marker-end: url(#arrow); }
+      .up { stroke: #16a34a; stroke-width: 1.8; fill: none; marker-end: url(#arrow); }
     </style>
   </defs>
 
   <rect width="1180" height="520" fill="#f8fafc"/>
   <text x="42" y="54" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="800" fill="#0f172a">DrugPipe workflow</text>
-  <text x="42" y="82" font-family="Inter, Arial, sans-serif" font-size="15" fill="#475569">Candidate genes anchor evidence integration before target ranking and Markdown outputs.</text>
+  <text x="42" y="82" font-family="Inter, Arial, sans-serif" font-size="15" fill="#475569">Candidate genes are scored by genetic, molecular, biological, MR, safety and druggability evidence.</text>
 
-  <g transform="translate(36 150)">
-    <rect class="box primary" x="0" y="0" width="138" height="84" rx="12"/>
-    <text class="label" x="18" y="34">GWAS inputs</text>
-    <text class="sub" x="18" y="58">summary stats</text>
+  <g transform="translate(28 150)">
+    <rect class="box primary" x="0" y="0" width="128" height="86" rx="12"/>
+    <text class="label" x="17" y="35">GWAS inputs</text>
+    <text class="sub" x="17" y="59">summary statistics</text>
   </g>
-  <path class="line" d="M174 192 H212"/>
+  <path class="line" d="M156 193 H180"/>
 
-  <g transform="translate(212 150)">
-    <rect class="box primary" x="0" y="0" width="116" height="84" rx="12"/>
-    <text class="label" x="25" y="34">QC</text>
-    <text class="sub" x="18" y="58">harmonise</text>
+  <g transform="translate(180 150)">
+    <rect class="box primary" x="0" y="0" width="104" height="86" rx="12"/>
+    <text class="label" x="38" y="35">QC</text>
+    <text class="sub" x="14" y="59">harmonise</text>
+    <text class="sub" x="14" y="75">and filter</text>
   </g>
-  <path class="line" d="M328 192 H366"/>
+  <path class="line" d="M284 193 H308"/>
 
-  <g transform="translate(366 150)">
-    <rect class="box primary" x="0" y="0" width="132" height="84" rx="12"/>
-    <text class="label" x="22" y="34">Loci</text>
-    <text class="sub" x="22" y="58">lead windows</text>
+  <g transform="translate(308 150)">
+    <rect class="box primary" x="0" y="0" width="118" height="86" rx="12"/>
+    <text class="label" x="38" y="35">Loci</text>
+    <text class="sub" x="17" y="59">lead SNP</text>
+    <text class="sub" x="17" y="75">windows</text>
   </g>
-  <path class="line" d="M498 192 H536"/>
+  <path class="line" d="M426 193 H450"/>
 
-  <g transform="translate(536 150)">
-    <rect class="box primary" x="0" y="0" width="160" height="84" rx="12"/>
-    <text class="label" x="20" y="34">Candidate genes</text>
-    <text class="sub" x="20" y="58">locus-to-gene</text>
+  <g transform="translate(450 150)">
+    <rect class="box primary" x="0" y="0" width="150" height="86" rx="12"/>
+    <text class="label" x="17" y="35">Candidate genes</text>
+    <text class="sub" x="17" y="59">locus-to-gene</text>
+    <text class="sub" x="17" y="75">mapping</text>
   </g>
-  <path class="line" d="M696 192 H734"/>
+  <path class="line" d="M600 193 H624"/>
 
-  <g transform="translate(734 150)">
-    <rect class="box evidence" x="0" y="0" width="176" height="84" rx="12"/>
-    <text class="label" x="22" y="34">Evidence integration</text>
-    <text class="sub" x="22" y="58">support per gene</text>
+  <g transform="translate(624 150)">
+    <rect class="box evidence" x="0" y="0" width="164" height="86" rx="12"/>
+    <text class="label" x="18" y="35">Evidence</text>
+    <text class="label" x="18" y="54">integration</text>
+    <text class="sub" x="18" y="76">support per gene</text>
   </g>
-  <path class="line" d="M910 192 H948"/>
+  <path class="line" d="M788 193 H812"/>
 
-  <g transform="translate(948 150)">
-    <rect class="box output" x="0" y="0" width="132" height="84" rx="12"/>
-    <text class="label" x="20" y="34">Ranked targets</text>
-    <text class="sub" x="20" y="58">hypotheses</text>
+  <g transform="translate(812 150)">
+    <rect class="box output" x="0" y="0" width="140" height="86" rx="12"/>
+    <text class="label" x="17" y="35">Ranked targets</text>
+    <text class="sub" x="17" y="59">prioritised</text>
+    <text class="sub" x="17" y="75">hypotheses</text>
   </g>
-  <path class="line" d="M1014 234 V288"/>
+  <path class="line" d="M952 193 H976"/>
 
-  <g transform="translate(902 288)">
-    <rect class="box output" x="0" y="0" width="224" height="72" rx="12"/>
-    <text class="label" x="28" y="30">Reports and cards</text>
-    <text class="sub" x="28" y="52">Markdown outputs</text>
-  </g>
-
-  <g transform="translate(224 326)">
-    <rect class="box evidence" x="0" y="0" width="130" height="54" rx="12"/>
-    <text class="chip" x="22" y="33">Fine-mapping</text>
-  </g>
-  <g transform="translate(384 326)">
-    <rect class="box evidence" x="0" y="0" width="130" height="54" rx="12"/>
-    <text class="chip" x="26" y="33">QTL / omics</text>
-  </g>
-  <g transform="translate(544 326)">
-    <rect class="box evidence" x="0" y="0" width="130" height="54" rx="12"/>
-    <text class="chip" x="22" y="33">Bone biology</text>
-  </g>
-  <g transform="translate(704 326)">
-    <rect class="box evidence" x="0" y="0" width="130" height="54" rx="12"/>
-    <text class="chip" x="23" y="33">MR + safety</text>
-  </g>
-  <g transform="translate(864 326)">
-    <rect class="box evidence" x="0" y="0" width="130" height="54" rx="12"/>
-    <text class="chip" x="20" y="33">Druggability</text>
+  <g transform="translate(976 150)">
+    <rect class="box output" x="0" y="0" width="166" height="86" rx="12"/>
+    <text class="label" x="18" y="35">Reports and cards</text>
+    <text class="sub" x="18" y="59">Markdown outputs</text>
   </g>
 
-  <path class="softline" d="M432 234 V274 H289 V326"/>
-  <path class="softline" d="M616 234 V274 H449 V326"/>
-  <path class="softline" d="M616 234 V274 H609 V326"/>
-  <path class="softline" d="M616 234 V274 H769 V326"/>
-  <path class="softline" d="M616 234 V274 H929 V326"/>
+  <g transform="translate(330 330)">
+    <rect class="box evidence" x="0" y="0" width="138" height="74" rx="12"/>
+    <text class="evidence-label" x="18" y="30">Fine-mapping</text>
+    <text class="sub" x="18" y="53">PIP and credible sets</text>
+  </g>
 
-  <path class="softline" d="M289 326 V292 H822 V234"/>
-  <path class="softline" d="M449 326 V292 H822 V234"/>
-  <path class="softline" d="M609 326 V292 H822 V234"/>
-  <path class="softline" d="M769 326 V292 H822 V234"/>
-  <path class="softline" d="M929 326 V292 H822 V234"/>
+  <g transform="translate(492 330)">
+    <rect class="box evidence" x="0" y="0" width="138" height="74" rx="12"/>
+    <text class="evidence-label" x="22" y="30">QTL / omics</text>
+    <text class="sub" x="22" y="53">molecular links</text>
+  </g>
+
+  <g transform="translate(654 330)">
+    <rect class="box evidence" x="0" y="0" width="138" height="74" rx="12"/>
+    <text class="evidence-label" x="18" y="30">Bone biology</text>
+    <text class="sub" x="18" y="53">cells and pathways</text>
+  </g>
+
+  <g transform="translate(816 330)">
+    <rect class="box evidence" x="0" y="0" width="138" height="74" rx="12"/>
+    <text class="evidence-label" x="21" y="30">MR + safety</text>
+    <text class="sub" x="18" y="53">target and liability</text>
+    <text class="sub" x="18" y="67">scans</text>
+  </g>
+
+  <g transform="translate(978 330)">
+    <rect class="box evidence" x="0" y="0" width="138" height="74" rx="12"/>
+    <text class="evidence-label" x="18" y="30">Druggability</text>
+    <text class="sub" x="18" y="53">tractability</text>
+    <text class="sub" x="18" y="67">annotation</text>
+  </g>
+
+  <path class="up" d="M399 330 V282 H706 V236"/>
+  <path class="up" d="M561 330 V288 H706 V236"/>
+  <path class="up" d="M723 330 V236"/>
+  <path class="up" d="M885 330 V288 H706 V236"/>
+  <path class="up" d="M1047 330 V282 H706 V236"/>
 </svg>
