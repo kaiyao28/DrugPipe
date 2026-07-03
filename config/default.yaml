@@ -1,17 +1,17 @@
 column_mappings:
   gwas_summary_statistics:
-    variant_id: variant_id
-    chromosome: chromosome
-    position: position
-    effect_allele: effect_allele
-    other_allele: other_allele
-    effect_size: beta
-    standard_error: standard_error
-    p_value: p_value
-    effect_allele_frequency: effect_allele_frequency
-    minor_allele_frequency: minor_allele_frequency
-    imputation_info: imputation_info
-    sample_size: sample_size
+    variant_id: SNP
+    chromosome: CHR
+    position: BP
+    effect_allele: A1
+    other_allele: A2
+    effect_size: BETA
+    standard_error: SE
+    p_value: P
+    effect_allele_frequency: EAF
+    minor_allele_frequency: MAF
+    imputation_info: INFO
+    sample_size: N
 
 qc_thresholds:
   min_info: 0.8

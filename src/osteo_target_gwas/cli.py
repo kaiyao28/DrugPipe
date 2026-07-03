@@ -2,9 +2,15 @@
 
 from __future__ import annotations
 
+import json
+from pathlib import Path
+
 import typer
 
 from osteo_target_gwas import __version__
+from osteo_target_gwas.config import load_default_config
+from osteo_target_gwas.io.read_gwas import read_gwas
+from osteo_target_gwas.io.validate_schema import validate_gwas_schema
 
 app = typer.Typer(
     help=(
@@ -38,9 +44,51 @@ def _placeholder(command_name: str) -> None:
 
 
 @app.command("validate")
-def validate() -> None:
+def validate(
+    gwas: Path | None = typer.Option(
+        None,
+        "--gwas",
+        help="GWAS summary-statistics file to validate.",
+        exists=True,
+        dir_okay=False,
+        readable=True,
+    ),
+    config: Path = typer.Option(
+        Path("config/default.yaml"),
+        "--config",
+        help="Pipeline configuration YAML with GWAS column mappings.",
+        exists=True,
+        dir_okay=False,
+        readable=True,
+    ),
+    outdir: Path | None = typer.Option(
+        None,
+        "--outdir",
+        help="Optional output directory for schema_validation.json.",
+        file_okay=False,
+    ),
+) -> None:
     """Validate pipeline inputs and configuration."""
-    _placeholder("validate")
+    if gwas is None:
+        _placeholder("validate")
+        return
+
+    try:
+        pipeline_config = load_default_config(config)
+        mappings = pipeline_config.get("column_mappings", {}).get("gwas_summary_statistics", {})
+        rows = read_gwas(gwas, mappings)
+        summary = validate_gwas_schema(rows)
+    except (OSError, TypeError, ValueError) as error:
+        typer.echo(f"Validation failed: {error}", err=True)
+        raise typer.Exit(code=1) from error
+
+    typer.echo(json.dumps(summary, indent=2))
+
+    if outdir is not None:
+        output_path = outdir / "qc" / "schema_validation.json"
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
+        typer.echo(f"Wrote validation summary to {output_path}")
 
 
 @app.command("qc")
