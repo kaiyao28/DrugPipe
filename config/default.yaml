@@ -1,0 +1,37 @@
+column_mappings:
+  gwas_summary_statistics:
+    variant_id: variant_id
+    chromosome: chromosome
+    position: position
+    effect_allele: effect_allele
+    other_allele: other_allele
+    effect_size: beta
+    standard_error: standard_error
+    p_value: p_value
+    effect_allele_frequency: effect_allele_frequency
+    minor_allele_frequency: minor_allele_frequency
+    imputation_info: imputation_info
+    sample_size: sample_size
+
+qc_thresholds:
+  min_info: 0.8
+  min_maf: 0.01
+  remove_ambiguous: true
+
+locus_settings:
+  p_threshold: 5.0e-8
+  window_kb: 500
+
+scoring_weights:
+  genetic_association: 0.20
+  fine_mapping: 0.10
+  locus_to_gene: 0.15
+  qtl_colocalisation: 0.15
+  bone_cell_context: 0.10
+  pathway_context: 0.05
+  mr_target_validation: 0.15
+  druggability: 0.10
+
+penalties:
+  safety_penalty_weight: 0.10
+  annotation_bias_penalty_weight: 0.05

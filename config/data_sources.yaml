@@ -1,0 +1,311 @@
+data_sources:
+  - name: osteoporosis GWAS
+    description: GWAS summary statistics for osteoporosis case-control status or clinically defined osteoporosis endpoints.
+    expected_file_format: TSV, CSV, or compressed TSV with one row per variant.
+    required_columns:
+      - variant_id
+      - chromosome
+      - position
+      - effect_allele
+      - other_allele
+      - beta
+      - standard_error
+      - p_value
+    optional_columns:
+      - effect_allele_frequency
+      - minor_allele_frequency
+      - imputation_info
+      - sample_size
+    url_placeholder: https://example.org/osteoporosis-gwas
+    licence_note: Confirm dataset-specific access terms and redistribution limits before use.
+    local_path: data/raw/gwas/osteoporosis.tsv.gz
+  - name: BMD GWAS
+    description: GWAS summary statistics for bone mineral density traits.
+    expected_file_format: TSV, CSV, or compressed TSV with one row per variant.
+    required_columns:
+      - variant_id
+      - chromosome
+      - position
+      - effect_allele
+      - other_allele
+      - beta
+      - standard_error
+      - p_value
+    optional_columns:
+      - trait
+      - anatomical_site
+      - effect_allele_frequency
+      - minor_allele_frequency
+      - imputation_info
+      - sample_size
+    url_placeholder: https://example.org/bmd-gwas
+    licence_note: Confirm dataset-specific access terms and redistribution limits before use.
+    local_path: data/raw/gwas/bmd.tsv.gz
+  - name: fracture GWAS
+    description: GWAS summary statistics for fracture risk endpoints.
+    expected_file_format: TSV, CSV, or compressed TSV with one row per variant.
+    required_columns:
+      - variant_id
+      - chromosome
+      - position
+      - effect_allele
+      - other_allele
+      - beta
+      - standard_error
+      - p_value
+    optional_columns:
+      - fracture_definition
+      - effect_allele_frequency
+      - minor_allele_frequency
+      - imputation_info
+      - sample_size
+    url_placeholder: https://example.org/fracture-gwas
+    licence_note: Confirm dataset-specific access terms and redistribution limits before use.
+    local_path: data/raw/gwas/fracture.tsv.gz
+  - name: gene annotation
+    description: Gene coordinates, identifiers, symbols, and biotypes for variant-to-gene mapping.
+    expected_file_format: GTF, GFF3, TSV, or compressed equivalent.
+    required_columns:
+      - gene_id
+      - gene_name
+      - chromosome
+      - start
+      - end
+    optional_columns:
+      - strand
+      - gene_biotype
+      - transcript_id
+    url_placeholder: https://example.org/gene-annotation
+    licence_note: Use a genome-build-compatible release and retain source licence details.
+    local_path: data/reference/gene_annotation.gtf.gz
+  - name: LD reference panel
+    description: Linkage disequilibrium reference genotypes or correlation matrices matched to the GWAS ancestry and genome build.
+    expected_file_format: PLINK binary files, VCF, Zarr, or precomputed LD matrix files.
+    required_columns:
+      - variant_id
+      - chromosome
+      - position
+      - effect_allele
+      - other_allele
+    optional_columns:
+      - ancestry
+      - population
+      - sample_size
+    url_placeholder: https://example.org/ld-reference-panel
+    licence_note: Confirm access controls and permitted downstream use for genotype-derived resources.
+    local_path: data/reference/ld_panel/
+  - name: Open Targets evidence
+    description: Target-disease evidence and target annotation records for osteoporosis-related prioritisation.
+    expected_file_format: Parquet, JSONL, TSV, or compressed equivalent.
+    required_columns:
+      - target_id
+      - disease_id
+      - evidence_type
+      - score
+    optional_columns:
+      - datasource
+      - publication_id
+      - evidence_url
+    url_placeholder: https://example.org/open-targets-evidence
+    licence_note: Check the source release licence and attribution requirements before redistribution.
+    local_path: data/external/open_targets/evidence.parquet
+  - name: eQTL resources
+    description: Expression QTL summary statistics for colocalisation with GWAS loci.
+    expected_file_format: TSV, Parquet, or compressed summary-statistic files.
+    required_columns:
+      - variant_id
+      - gene_id
+      - tissue_or_cell_type
+      - beta
+      - standard_error
+      - p_value
+    optional_columns:
+      - effect_allele
+      - other_allele
+      - sample_size
+      - q_value
+    url_placeholder: https://example.org/eqtl-resources
+    licence_note: Confirm consent, licence, and tissue-specific access terms.
+    local_path: data/external/qtl/eqtl/
+  - name: sQTL resources
+    description: Splicing QTL summary statistics for colocalisation with GWAS loci.
+    expected_file_format: TSV, Parquet, or compressed summary-statistic files.
+    required_columns:
+      - variant_id
+      - molecular_trait_id
+      - gene_id
+      - tissue_or_cell_type
+      - beta
+      - standard_error
+      - p_value
+    optional_columns:
+      - effect_allele
+      - other_allele
+      - sample_size
+      - intron_cluster
+    url_placeholder: https://example.org/sqtl-resources
+    licence_note: Confirm consent, licence, and tissue-specific access terms.
+    local_path: data/external/qtl/sqtl/
+  - name: pQTL resources
+    description: Protein QTL summary statistics for target validation and colocalisation.
+    expected_file_format: TSV, Parquet, or compressed summary-statistic files.
+    required_columns:
+      - variant_id
+      - protein_id
+      - gene_id
+      - beta
+      - standard_error
+      - p_value
+    optional_columns:
+      - effect_allele
+      - other_allele
+      - sample_size
+      - assay_id
+    url_placeholder: https://example.org/pqtl-resources
+    licence_note: Confirm platform-specific licence and redistribution limits.
+    local_path: data/external/qtl/pqtl/
+  - name: bone-cell marker file
+    description: Marker genes or signatures for osteoblast, osteoclast, osteocyte, stromal, and other relevant bone-cell states.
+    expected_file_format: TSV, CSV, GMT, or compressed equivalent.
+    required_columns:
+      - gene_id
+      - cell_type
+      - marker_evidence
+    optional_columns:
+      - gene_name
+      - specificity_score
+      - source_study
+    url_placeholder: https://example.org/bone-cell-markers
+    licence_note: Confirm source-study reuse terms and attribution requirements.
+    local_path: data/external/biology/bone_cell_markers.tsv
+  - name: pathway gene-set file
+    description: Curated pathway and mechanism gene sets for interpreting candidate targets.
+    expected_file_format: GMT, TSV, JSON, or compressed equivalent.
+    required_columns:
+      - pathway_id
+      - pathway_name
+      - gene_id
+    optional_columns:
+      - gene_name
+      - source
+      - pathway_description
+    url_placeholder: https://example.org/pathway-gene-sets
+    licence_note: Retain source database licences and citation requirements.
+    local_path: data/external/biology/pathway_gene_sets.gmt
+  - name: druggable genome file
+    description: Gene-level druggability classes, target families, and tractability annotations.
+    expected_file_format: TSV, CSV, JSON, or compressed equivalent.
+    required_columns:
+      - gene_id
+      - druggability_tier
+      - target_family
+    optional_columns:
+      - gene_name
+      - modality
+      - evidence_source
+    url_placeholder: https://example.org/druggable-genome
+    licence_note: Confirm permitted research and redistribution use for annotation sources.
+    local_path: data/external/targets/druggable_genome.tsv
+  - name: MR exposure file
+    description: Genetic instruments and exposure associations for target or biomarker Mendelian randomisation.
+    expected_file_format: TSV, CSV, or compressed equivalent.
+    required_columns:
+      - exposure_id
+      - variant_id
+      - effect_allele
+      - other_allele
+      - beta
+      - standard_error
+      - p_value
+    optional_columns:
+      - gene_id
+      - instrument_strength
+      - sample_size
+    url_placeholder: https://example.org/mr-exposures
+    licence_note: Confirm exposure dataset licence and sample overlap constraints.
+    local_path: data/external/mr/exposures.tsv.gz
+  - name: MR outcome file
+    description: Outcome GWAS associations for Mendelian randomisation target validation.
+    expected_file_format: TSV, CSV, or compressed equivalent.
+    required_columns:
+      - outcome_id
+      - variant_id
+      - effect_allele
+      - other_allele
+      - beta
+      - standard_error
+      - p_value
+    optional_columns:
+      - trait
+      - sample_size
+      - case_count
+      - control_count
+    url_placeholder: https://example.org/mr-outcomes
+    licence_note: Confirm outcome dataset licence and analysis restrictions.
+    local_path: data/external/mr/outcomes.tsv.gz
+  - name: mediation MR result file
+    description: Results from mediation Mendelian randomisation analyses linking targets, mediators, and bone outcomes.
+    expected_file_format: TSV, CSV, Parquet, or compressed equivalent.
+    required_columns:
+      - target_id
+      - mediator_id
+      - outcome_id
+      - mediated_effect
+      - p_value
+    optional_columns:
+      - direct_effect
+      - indirect_effect
+      - standard_error
+      - method
+    url_placeholder: https://example.org/mediation-mr-results
+    licence_note: Record provenance and analysis permissions for all upstream inputs.
+    local_path: data/processed/mr/mediation_results.tsv
+  - name: Phe-MR result file
+    description: Phenome-wide Mendelian randomisation results for target safety and adverse-effect scanning.
+    expected_file_format: TSV, CSV, Parquet, or compressed equivalent.
+    required_columns:
+      - target_id
+      - phenotype_id
+      - beta
+      - standard_error
+      - p_value
+    optional_columns:
+      - phenotype_name
+      - direction
+      - multiple_testing_q_value
+      - evidence_category
+    url_placeholder: https://example.org/phe-mr-results
+    licence_note: Confirm phenotype dataset licences and reporting constraints.
+    local_path: data/processed/mr/phe_mr_results.tsv
+  - name: druggability file
+    description: Target-level tractability, modality, and known ligand or intervention annotations.
+    expected_file_format: TSV, CSV, JSON, or compressed equivalent.
+    required_columns:
+      - target_id
+      - gene_id
+      - druggability_score
+      - modality
+    optional_columns:
+      - approved_intervention_count
+      - clinical_stage
+      - target_class
+      - evidence_source
+    url_placeholder: https://example.org/druggability-annotations
+    licence_note: Verify source-specific reuse, attribution, and clinical annotation limits.
+    local_path: data/external/targets/druggability.tsv
+  - name: safety annotation file
+    description: Known or predicted target safety annotations for score penalties and evidence cards.
+    expected_file_format: TSV, CSV, JSON, or compressed equivalent.
+    required_columns:
+      - target_id
+      - safety_event
+      - evidence_level
+      - direction
+    optional_columns:
+      - gene_id
+      - phenotype_id
+      - severity
+      - evidence_source
+    url_placeholder: https://example.org/safety-annotations
+    licence_note: Confirm permitted use for safety annotations and retain evidence provenance.
+    local_path: data/external/targets/safety_annotations.tsv
