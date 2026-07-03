@@ -22,6 +22,7 @@ from osteo_target_gwas.mr.target_mr import run_target_mr_parser
 from osteo_target_gwas.qc.filter_sumstats import run_gwas_qc
 from osteo_target_gwas.qtl.coloc import run_coloc_parser
 from osteo_target_gwas.targets.druggability import run_druggability_annotation
+from osteo_target_gwas.targets.score import score_targets as run_target_scoring
 
 app = typer.Typer(
     help=(
@@ -601,9 +602,35 @@ def druggability(
 
 
 @app.command("score-targets")
-def score_targets() -> None:
+def score_targets(
+    results: Path | None = typer.Option(
+        None,
+        "--results",
+        help="Trait results directory containing pipeline evidence outputs.",
+        file_okay=False,
+    ),
+    config: Path = typer.Option(
+        Path("config/default.yaml"),
+        "--config",
+        help="Pipeline configuration YAML with scoring weights.",
+        exists=True,
+        dir_okay=False,
+        readable=True,
+    ),
+) -> None:
     """Score and rank candidate targets."""
-    _placeholder("score-targets")
+    if results is None:
+        _placeholder("score-targets")
+        return
+
+    try:
+        result = run_target_scoring(results_dir=results, config_path=config)
+    except (OSError, TypeError, ValueError) as error:
+        typer.echo(f"Target scoring failed: {error}", err=True)
+        raise typer.Exit(code=1) from error
+
+    typer.echo(json.dumps({"n_targets": result["n_targets"]}, indent=2))
+    typer.echo(f"Wrote ranked targets to {result['ranked_targets_path']}")
 
 
 @app.command("report")
