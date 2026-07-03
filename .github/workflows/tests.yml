@@ -1,0 +1,56 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install package and test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e .
+          python -m pip install pytest
+
+      - name: Run tests
+        run: pytest
+
+      - name: Check CLI help
+        run: osteo-target-gwas --help
+
+      - name: Run example pipeline
+        run: |
+          osteo-target-gwas run \
+            --gwas data/example/example_gwas.tsv \
+            --genes data/example/gene_annotation.tsv \
+            --l2g data/example/opentargets_l2g.tsv \
+            --credible-sets data/example/credible_sets.tsv \
+            --coloc data/example/coloc_results.tsv \
+            --bone-markers data/example/bone_cell_markers.tsv \
+            --pathways data/example/pathway_gene_sets.tsv \
+            --mr data/example/mr_results.tsv \
+            --mediation data/example/mediation_mr_results.tsv \
+            --phe-mr data/example/phe_mr_results.tsv \
+            --druggability data/example/druggability.tsv \
+            --config config/default.yaml \
+            --outdir results/example \
+            --report reports/example/target_prioritisation_report.md \
+            --cards-dir reports/example/target_cards
+
+      - name: Upload example reports
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: example-reports
+          path: reports/example
