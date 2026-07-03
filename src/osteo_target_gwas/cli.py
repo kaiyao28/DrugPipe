@@ -21,6 +21,7 @@ from osteo_target_gwas.mr.phe_mr import run_phe_mr_parser
 from osteo_target_gwas.mr.target_mr import run_target_mr_parser
 from osteo_target_gwas.qc.filter_sumstats import run_gwas_qc
 from osteo_target_gwas.qtl.coloc import run_coloc_parser
+from osteo_target_gwas.targets.druggability import run_druggability_annotation
 
 app = typer.Typer(
     help=(
@@ -565,9 +566,38 @@ def phe_mr(
 
 
 @app.command("druggability")
-def druggability() -> None:
+def druggability(
+    druggability_file: Path | None = typer.Option(
+        None,
+        "--druggability",
+        help="Druggability and tractability annotation TSV.",
+        exists=True,
+        dir_okay=False,
+        readable=True,
+    ),
+    outdir: Path = typer.Option(
+        Path("results/example"),
+        "--outdir",
+        help="Trait output directory; druggability files are written under its targets/ subdirectory.",
+        file_okay=False,
+    ),
+) -> None:
     """Annotate candidate-target druggability."""
-    _placeholder("druggability")
+    if druggability_file is None:
+        _placeholder("druggability")
+        return
+
+    try:
+        result = run_druggability_annotation(
+            druggability_path=druggability_file,
+            outdir=outdir,
+        )
+    except (OSError, TypeError, ValueError) as error:
+        typer.echo(f"Druggability annotation failed: {error}", err=True)
+        raise typer.Exit(code=1) from error
+
+    typer.echo(json.dumps({"n_targets": result["n_targets"]}, indent=2))
+    typer.echo(f"Wrote druggability annotations to {result['druggability_path']}")
 
 
 @app.command("score-targets")
