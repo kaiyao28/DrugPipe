@@ -11,6 +11,7 @@ from osteo_target_gwas import __version__
 from osteo_target_gwas.config import load_default_config
 from osteo_target_gwas.io.read_gwas import read_gwas
 from osteo_target_gwas.io.validate_schema import validate_gwas_schema
+from osteo_target_gwas.loci.define_loci import define_significant_loci
 from osteo_target_gwas.qc.filter_sumstats import run_gwas_qc
 
 app = typer.Typer(
@@ -157,9 +158,59 @@ def qc(
 
 
 @app.command("define-loci")
-def define_loci() -> None:
+def define_loci(
+    gwas: Path | None = typer.Option(
+        None,
+        "--gwas",
+        help="Harmonised GWAS summary-statistics file.",
+        exists=True,
+        dir_okay=False,
+        readable=True,
+    ),
+    outdir: Path = typer.Option(
+        Path("results/example"),
+        "--outdir",
+        help="Trait output directory; loci.tsv is written under its loci/ subdirectory.",
+        file_okay=False,
+    ),
+    config: Path = typer.Option(
+        Path("config/default.yaml"),
+        "--config",
+        help="Pipeline configuration YAML.",
+        exists=True,
+        dir_okay=False,
+        readable=True,
+    ),
+    p_threshold: float | None = typer.Option(
+        None,
+        "--p-threshold",
+        help="Genome-wide significance threshold; defaults to config.",
+    ),
+    window_kb: int | None = typer.Option(
+        None,
+        "--window-kb",
+        help="Lead-SNP window size in kilobases; defaults to config.",
+    ),
+) -> None:
     """Define associated loci from GWAS results."""
-    _placeholder("define-loci")
+    if gwas is None:
+        _placeholder("define-loci")
+        return
+
+    try:
+        result = define_significant_loci(
+            gwas_path=gwas,
+            outdir=outdir,
+            config_path=config,
+            p_threshold=p_threshold,
+            window_kb=window_kb,
+        )
+    except (OSError, TypeError, ValueError) as error:
+        typer.echo(f"Locus definition failed: {error}", err=True)
+        raise typer.Exit(code=1) from error
+
+    typer.echo(json.dumps({"n_loci": result["n_loci"], "n_significant_variants": result["n_significant_variants"]}, indent=2))
+    typer.echo(f"Wrote loci to {result['loci_path']}")
 
 
 @app.command("finemap")
