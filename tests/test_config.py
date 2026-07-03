@@ -1,3 +1,5 @@
+import pytest
+
 from osteo_target_gwas.config import (
     get_scoring_weights,
     load_data_sources,
@@ -35,7 +37,7 @@ def test_scoring_weights_sum_to_one_before_penalties() -> None:
     config = load_default_config()
     weights = get_scoring_weights(config)
 
-    assert sum(weights.values()) == 1.0
+    assert sum(weights.values()) == pytest.approx(1.0)
 
 
 def test_data_source_entries_contain_required_metadata_fields() -> None:
