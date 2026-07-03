@@ -16,6 +16,7 @@ from osteo_target_gwas.genes.variant_to_gene import map_variants_to_genes
 from osteo_target_gwas.io.read_gwas import read_gwas
 from osteo_target_gwas.io.validate_schema import validate_gwas_schema
 from osteo_target_gwas.loci.define_loci import define_significant_loci
+from osteo_target_gwas.mr.target_mr import run_target_mr_parser
 from osteo_target_gwas.qc.filter_sumstats import run_gwas_qc
 from osteo_target_gwas.qtl.coloc import run_coloc_parser
 
@@ -463,9 +464,36 @@ def pathway(
 
 
 @app.command("mr-targets")
-def mr_targets() -> None:
+def mr_targets(
+    mr: Path | None = typer.Option(
+        None,
+        "--mr",
+        help="Precomputed target MR result TSV.",
+        exists=True,
+        dir_okay=False,
+        readable=True,
+    ),
+    outdir: Path = typer.Option(
+        Path("results/example"),
+        "--outdir",
+        help="Trait output directory; MR files are written under its mr/ subdirectory.",
+        file_okay=False,
+    ),
+) -> None:
     """Run genome-wide Mendelian randomisation target scans."""
-    _placeholder("mr-targets")
+    if mr is None:
+        _placeholder("mr-targets")
+        return
+
+    try:
+        result = run_target_mr_parser(mr_path=mr, outdir=outdir)
+    except (OSError, TypeError, ValueError) as error:
+        typer.echo(f"Target MR parsing failed: {error}", err=True)
+        raise typer.Exit(code=1) from error
+
+    typer.echo(json.dumps({"n_mr_records": result["n_mr_records"], "n_genes": result["n_genes"]}, indent=2))
+    typer.echo(f"Wrote target MR results to {result['target_mr_results_path']}")
+    typer.echo(f"Wrote gene MR summary to {result['gene_mr_summary_path']}")
 
 
 @app.command("mediation-mr")
