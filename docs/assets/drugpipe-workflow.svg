@@ -1,115 +1,115 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="520" viewBox="0 0 1180 520" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="620" viewBox="0 0 1600 620" role="img" aria-labelledby="title desc">
   <title id="title">DrugPipe workflow</title>
-  <desc id="desc">GWAS inputs flow through QC, loci, candidate genes, evidence integration, ranked targets, and reports. Evidence layers feed into evidence integration.</desc>
+  <desc id="desc">GWAS inputs flow through QC, loci, candidate genes, evidence integration, ranked targets, and reports. Evidence layers are shown below evidence integration.</desc>
   <defs>
     <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
       <path d="M0 0 L10 5 L0 10 Z" fill="#64748b"/>
     </marker>
     <style>
-      .box { fill: #ffffff; stroke: #cbd5e1; stroke-width: 1.5; }
+      .box { fill: #ffffff; stroke: #cbd5e1; stroke-width: 1.6; }
       .primary { fill: #ecfeff; stroke: #0891b2; }
       .evidence { fill: #f0fdf4; stroke: #16a34a; }
       .output { fill: #fffbeb; stroke: #d97706; }
-      .label { font: 700 15px Inter, Arial, sans-serif; fill: #0f172a; }
-      .sub { font: 12.5px Inter, Arial, sans-serif; fill: #475569; }
-      .evidence-label { font: 700 14px Inter, Arial, sans-serif; fill: #14532d; }
-      .line { stroke: #64748b; stroke-width: 2; fill: none; marker-end: url(#arrow); }
-      .up { stroke: #16a34a; stroke-width: 1.8; fill: none; marker-end: url(#arrow); }
+      .label { font: 700 19px Inter, Arial, sans-serif; fill: #0f172a; }
+      .sub { font: 15px Inter, Arial, sans-serif; fill: #475569; }
+      .evidence-title { font: 700 17px Inter, Arial, sans-serif; fill: #14532d; }
+      .caption { font: 700 17px Inter, Arial, sans-serif; fill: #166534; }
+      .line { stroke: #64748b; stroke-width: 2.2; fill: none; marker-end: url(#arrow); }
+      .hint { stroke: #16a34a; stroke-width: 2; fill: none; marker-end: url(#arrow); }
     </style>
   </defs>
 
-  <rect width="1180" height="520" fill="#f8fafc"/>
-  <text x="42" y="54" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="800" fill="#0f172a">DrugPipe workflow</text>
-  <text x="42" y="82" font-family="Inter, Arial, sans-serif" font-size="15" fill="#475569">Candidate genes are scored by genetic, molecular, biological, MR, safety and druggability evidence.</text>
+  <rect width="1600" height="620" fill="#f8fafc"/>
+  <text x="56" y="66" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="800" fill="#0f172a">DrugPipe workflow</text>
+  <text x="56" y="102" font-family="Inter, Arial, sans-serif" font-size="19" fill="#475569">Candidate genes are scored by genetic, molecular, biological, MR, safety and druggability evidence.</text>
 
-  <g transform="translate(28 150)">
-    <rect class="box primary" x="0" y="0" width="128" height="86" rx="12"/>
-    <text class="label" x="17" y="35">GWAS inputs</text>
-    <text class="sub" x="17" y="59">summary statistics</text>
+  <g transform="translate(54 178)">
+    <rect class="box primary" x="0" y="0" width="160" height="98" rx="13"/>
+    <text class="label" x="22" y="40">GWAS inputs</text>
+    <text class="sub" x="22" y="68">summary statistics</text>
   </g>
-  <path class="line" d="M156 193 H180"/>
+  <path class="line" d="M214 227 H252"/>
 
-  <g transform="translate(180 150)">
-    <rect class="box primary" x="0" y="0" width="104" height="86" rx="12"/>
-    <text class="label" x="38" y="35">QC</text>
-    <text class="sub" x="14" y="59">harmonise</text>
-    <text class="sub" x="14" y="75">and filter</text>
+  <g transform="translate(252 178)">
+    <rect class="box primary" x="0" y="0" width="136" height="98" rx="13"/>
+    <text class="label" x="50" y="40">QC</text>
+    <text class="sub" x="20" y="68">harmonise</text>
+    <text class="sub" x="20" y="86">and filter</text>
   </g>
-  <path class="line" d="M284 193 H308"/>
+  <path class="line" d="M388 227 H426"/>
 
-  <g transform="translate(308 150)">
-    <rect class="box primary" x="0" y="0" width="118" height="86" rx="12"/>
-    <text class="label" x="38" y="35">Loci</text>
-    <text class="sub" x="17" y="59">lead SNP</text>
-    <text class="sub" x="17" y="75">windows</text>
+  <g transform="translate(426 178)">
+    <rect class="box primary" x="0" y="0" width="150" height="98" rx="13"/>
+    <text class="label" x="47" y="40">Loci</text>
+    <text class="sub" x="22" y="68">lead SNP</text>
+    <text class="sub" x="22" y="86">windows</text>
   </g>
-  <path class="line" d="M426 193 H450"/>
+  <path class="line" d="M576 227 H614"/>
 
-  <g transform="translate(450 150)">
-    <rect class="box primary" x="0" y="0" width="150" height="86" rx="12"/>
-    <text class="label" x="17" y="35">Candidate genes</text>
-    <text class="sub" x="17" y="59">locus-to-gene</text>
-    <text class="sub" x="17" y="75">mapping</text>
+  <g transform="translate(614 178)">
+    <rect class="box primary" x="0" y="0" width="190" height="98" rx="13"/>
+    <text class="label" x="24" y="40">Candidate genes</text>
+    <text class="sub" x="24" y="68">locus-to-gene</text>
+    <text class="sub" x="24" y="86">mapping</text>
   </g>
-  <path class="line" d="M600 193 H624"/>
+  <path class="line" d="M804 227 H842"/>
 
-  <g transform="translate(624 150)">
-    <rect class="box evidence" x="0" y="0" width="164" height="86" rx="12"/>
-    <text class="label" x="18" y="35">Evidence</text>
-    <text class="label" x="18" y="54">integration</text>
-    <text class="sub" x="18" y="76">support per gene</text>
+  <g transform="translate(842 178)">
+    <rect class="box evidence" x="0" y="0" width="206" height="98" rx="13"/>
+    <text class="label" x="26" y="40">Evidence</text>
+    <text class="label" x="26" y="61">integration</text>
+    <text class="sub" x="26" y="86">support per gene</text>
   </g>
-  <path class="line" d="M788 193 H812"/>
+  <path class="line" d="M1048 227 H1086"/>
 
-  <g transform="translate(812 150)">
-    <rect class="box output" x="0" y="0" width="140" height="86" rx="12"/>
-    <text class="label" x="17" y="35">Ranked targets</text>
-    <text class="sub" x="17" y="59">prioritised</text>
-    <text class="sub" x="17" y="75">hypotheses</text>
+  <g transform="translate(1086 178)">
+    <rect class="box output" x="0" y="0" width="184" height="98" rx="13"/>
+    <text class="label" x="24" y="40">Ranked targets</text>
+    <text class="sub" x="24" y="68">prioritised</text>
+    <text class="sub" x="24" y="86">hypotheses</text>
   </g>
-  <path class="line" d="M952 193 H976"/>
+  <path class="line" d="M1270 227 H1308"/>
 
-  <g transform="translate(976 150)">
-    <rect class="box output" x="0" y="0" width="166" height="86" rx="12"/>
-    <text class="label" x="18" y="35">Reports and cards</text>
-    <text class="sub" x="18" y="59">Markdown outputs</text>
-  </g>
-
-  <g transform="translate(330 330)">
-    <rect class="box evidence" x="0" y="0" width="138" height="74" rx="12"/>
-    <text class="evidence-label" x="18" y="30">Fine-mapping</text>
-    <text class="sub" x="18" y="53">PIP and credible sets</text>
+  <g transform="translate(1308 178)">
+    <rect class="box output" x="0" y="0" width="220" height="98" rx="13"/>
+    <text class="label" x="28" y="40">Reports and cards</text>
+    <text class="sub" x="28" y="68">Markdown outputs</text>
   </g>
 
-  <g transform="translate(492 330)">
-    <rect class="box evidence" x="0" y="0" width="138" height="74" rx="12"/>
-    <text class="evidence-label" x="22" y="30">QTL / omics</text>
-    <text class="sub" x="22" y="53">molecular links</text>
+  <text class="caption" x="881" y="332">Evidence layers</text>
+  <path class="hint" d="M945 324 V284"/>
+
+  <g transform="translate(358 398)">
+    <rect class="box evidence" x="0" y="0" width="166" height="90" rx="13"/>
+    <text class="evidence-title" x="24" y="34">Fine-mapping</text>
+    <text class="sub" x="24" y="62">PIP and credible</text>
+    <text class="sub" x="24" y="80">sets</text>
   </g>
 
-  <g transform="translate(654 330)">
-    <rect class="box evidence" x="0" y="0" width="138" height="74" rx="12"/>
-    <text class="evidence-label" x="18" y="30">Bone biology</text>
-    <text class="sub" x="18" y="53">cells and pathways</text>
+  <g transform="translate(552 398)">
+    <rect class="box evidence" x="0" y="0" width="166" height="90" rx="13"/>
+    <text class="evidence-title" x="31" y="34">QTL / omics</text>
+    <text class="sub" x="31" y="62">molecular links</text>
   </g>
 
-  <g transform="translate(816 330)">
-    <rect class="box evidence" x="0" y="0" width="138" height="74" rx="12"/>
-    <text class="evidence-label" x="21" y="30">MR + safety</text>
-    <text class="sub" x="18" y="53">target and liability</text>
-    <text class="sub" x="18" y="67">scans</text>
+  <g transform="translate(746 398)">
+    <rect class="box evidence" x="0" y="0" width="166" height="90" rx="13"/>
+    <text class="evidence-title" x="25" y="34">Bone biology</text>
+    <text class="sub" x="25" y="62">cells and</text>
+    <text class="sub" x="25" y="80">pathways</text>
   </g>
 
-  <g transform="translate(978 330)">
-    <rect class="box evidence" x="0" y="0" width="138" height="74" rx="12"/>
-    <text class="evidence-label" x="18" y="30">Druggability</text>
-    <text class="sub" x="18" y="53">tractability</text>
-    <text class="sub" x="18" y="67">annotation</text>
+  <g transform="translate(940 398)">
+    <rect class="box evidence" x="0" y="0" width="166" height="90" rx="13"/>
+    <text class="evidence-title" x="28" y="34">MR + safety</text>
+    <text class="sub" x="24" y="62">target and</text>
+    <text class="sub" x="24" y="80">liability scans</text>
   </g>
 
-  <path class="up" d="M399 330 V282 H706 V236"/>
-  <path class="up" d="M561 330 V288 H706 V236"/>
-  <path class="up" d="M723 330 V236"/>
-  <path class="up" d="M885 330 V288 H706 V236"/>
-  <path class="up" d="M1047 330 V282 H706 V236"/>
+  <g transform="translate(1134 398)">
+    <rect class="box evidence" x="0" y="0" width="166" height="90" rx="13"/>
+    <text class="evidence-title" x="22" y="34">Druggability</text>
+    <text class="sub" x="22" y="62">tractability</text>
+    <text class="sub" x="22" y="80">annotation</text>
+  </g>
 </svg>
