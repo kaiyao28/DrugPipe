@@ -1,0 +1,17 @@
+gene_name	cell_type	marker_strength
+RUNX2	osteoblast	0.95
+SP7	osteoblast	0.93
+BGLAP	osteoblast	0.89
+SOST	osteocyte	0.96
+DMP1	osteocyte	0.91
+CTSK	osteoclast	0.94
+ACP5	osteoclast	0.90
+TNFSF11	osteoblast	0.72
+TNFSF11	immune_cell	0.65
+TNFRSF11B	osteoblast	0.78
+WNT16	mesenchymal_stromal_cell	0.81
+LRP5	mesenchymal_stromal_cell	0.76
+TAS1R3	mesenchymal_stromal_cell	0.42
+TMX2	mesenchymal_stromal_cell	0.48
+SREBF1	mesenchymal_stromal_cell	0.57
+SREBF1	immune_cell	0.46

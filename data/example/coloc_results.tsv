@@ -1,0 +1,10 @@
+locus_id	gene_name	qtl_type	tissue_or_cell	pp_h4	pp_h3	effect_direction
+chr17_43890000	SOST	eQTL	osteocyte	0.82	0.05	consistent
+chr11_68184000	LRP5	eQTL	osteoblast	0.74	0.08	consistent
+chr7_120970000	WNT16	sQTL	mesenchymal_stromal_cell	0.69	0.12	consistent
+chr1_150770000	CTSK	eQTL	osteoclast	0.77	0.07	opposite
+chr13_43124000	TNFSF11	eQTL	osteoblast	0.63	0.10	consistent
+chr8_119945000	TNFRSF11B	pQTL	serum	0.71	0.09	consistent
+chr1_1266900	TAS1R3	eQTL	mesenchymal_stromal_cell	0.38	0.18	consistent
+chr11_57602000	TMX2	eQTL	mesenchymal_stromal_cell	0.44	0.16	consistent
+chr17_17908000	SREBF1	pQTL	serum	0.52	0.14	opposite

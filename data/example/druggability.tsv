@@ -1,0 +1,10 @@
+gene_name	target_class	tractability_modality	tractability_score	known_drug	known_drug_name	safety_note
+SOST	secreted_protein	antibody	0.92	yes	synthetic_anti_sclerostin_reference	cardiovascular safety monitoring recommended in this synthetic example
+LRP5	receptor	small_molecule_or_biologic	0.61	no	NA	high pathway pleiotropy potential
+WNT16	secreted_ligand	biologic	0.54	no	NA	context-specific WNT modulation risk
+CTSK	enzyme	small_molecule	0.86	yes	synthetic_cathepsin_k_reference	off-target tissue effects should be monitored
+TNFSF11	cytokine	biologic	0.88	yes	synthetic_rankl_reference	immune and calcium balance monitoring recommended
+TNFRSF11B	secreted_decoy_receptor	biologic	0.76	no	NA	vascular biology signals need review
+TAS1R3	gpcr	small_molecule	0.43	no	NA	metabolic pleiotropy watch item
+TMX2	enzyme_like_protein	small_molecule	0.39	no	NA	limited target-biology annotation
+SREBF1	transcription_factor	indirect_modulation	0.46	no	NA	lipid and insulin-resistance signals require safety review

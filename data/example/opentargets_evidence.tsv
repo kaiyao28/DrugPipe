@@ -1,0 +1,11 @@
+gene_id	gene_name	disease_name	genetic_association_score	tractability_score	known_drug_score	safety_score	datasource
+ENSG_SYN_SOST	SOST	osteoporosis	0.94	0.91	0.88	0.72	synthetic_evidence
+ENSG_SYN_LRP5	LRP5	osteoporosis	0.90	0.62	0.35	0.66	synthetic_evidence
+ENSG_SYN_WNT16	WNT16	bone mineral density	0.88	0.54	0.20	0.70	synthetic_evidence
+ENSG_SYN_CTSK	CTSK	osteoporosis	0.83	0.86	0.75	0.58	synthetic_evidence
+ENSG_SYN_TNFSF11	TNFSF11	osteoporosis	0.79	0.88	0.82	0.64	synthetic_evidence
+ENSG_SYN_TNFRSF11B	TNFRSF11B	fracture risk	0.81	0.76	0.52	0.69	synthetic_evidence
+ENSG_SYN_TAS1R3	TAS1R3	bone mineral density	0.42	0.33	0.05	0.74	synthetic_evidence
+ENSG_SYN_TMX2	TMX2	bone mineral density	0.46	0.41	0.08	0.71	synthetic_evidence
+ENSG_SYN_SREBF1	SREBF1	bone mineral density	0.52	0.58	0.18	0.55	synthetic_evidence
+ENSG_SYN_RUNX2	RUNX2	osteoblast differentiation	0.67	0.28	0.04	0.73	synthetic_evidence

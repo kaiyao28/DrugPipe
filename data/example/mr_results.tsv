@@ -1,0 +1,7 @@
+gene_name	exposure_type	exposure_id	outcome	beta	se	p	f_statistic	method	direction
+TAS1R3	cis_expression	TAS1R3_osteoblast_eqtl	femoral_neck_BMD	0.021	0.009	0.019	32.4	IVW	higher_exposure_higher_BMD
+TMX2	cis_expression	TMX2_stromal_eqtl	lumbar_spine_BMD	-0.026	0.010	0.009	29.8	IVW	higher_exposure_lower_BMD
+SREBF1	cis_protein	SREBF1_pqtl	total_body_BMD	-0.031	0.012	0.010	36.1	Wald_ratio	higher_exposure_lower_BMD
+SOST	cis_protein	SOST_pqtl	fracture_risk	0.084	0.028	0.0027	44.6	IVW	higher_exposure_higher_fracture_risk
+LRP5	cis_expression	LRP5_osteoblast_eqtl	heel_BMD	0.047	0.015	0.0018	41.9	IVW	higher_exposure_higher_BMD
+WNT16	cis_expression	WNT16_stromal_eqtl	forearm_BMD	0.039	0.014	0.0053	38.7	IVW	higher_exposure_higher_BMD

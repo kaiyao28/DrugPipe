@@ -1,0 +1,9 @@
+gene_name	mediator	mediator_category	indirect_effect	se	p	proportion_mediated
+TAS1R3	BMI	anthropometric	0.006	0.003	0.041	0.22
+TAS1R3	type_2_diabetes	metabolic	0.004	0.002	0.048	0.15
+TMX2	CCL4	immune	-0.008	0.003	0.011	0.31
+SREBF1	lipid_metabolism	metabolic	-0.013	0.004	0.002	0.42
+SREBF1	insulin_resistance	metabolic	-0.010	0.004	0.014	0.33
+WNT16	immune_regulation	immune	0.005	0.002	0.030	0.18
+SOST	BMI	anthropometric	0.009	0.004	0.026	0.19
+LRP5	insulin_resistance	metabolic	0.007	0.003	0.021	0.17
