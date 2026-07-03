@@ -22,6 +22,7 @@ from osteo_target_gwas.mr.target_mr import run_target_mr_parser
 from osteo_target_gwas.qc.filter_sumstats import run_gwas_qc
 from osteo_target_gwas.qtl.coloc import run_coloc_parser
 from osteo_target_gwas.report.make_report import make_markdown_report
+from osteo_target_gwas.report.target_cards import make_target_cards as run_target_cards
 from osteo_target_gwas.targets.druggability import run_druggability_annotation
 from osteo_target_gwas.targets.score import score_targets as run_target_scoring
 
@@ -668,9 +669,42 @@ def report(
 
 
 @app.command("make-target-cards")
-def make_target_cards() -> None:
+def make_target_cards(
+    results: Path | None = typer.Option(
+        None,
+        "--results",
+        help="Trait results directory containing ranked targets and evidence outputs.",
+        file_okay=False,
+    ),
+    top_n: int = typer.Option(
+        10,
+        "--top-n",
+        help="Number of top ranked targets to render.",
+        min=1,
+    ),
+    outdir: Path | None = typer.Option(
+        None,
+        "--outdir",
+        help="Directory for Markdown target cards.",
+        file_okay=False,
+    ),
+) -> None:
     """Create target evidence cards."""
-    _placeholder("make-target-cards")
+    if results is None and outdir is None:
+        _placeholder("make-target-cards")
+        return
+    if results is None or outdir is None:
+        typer.echo("Target card generation requires --results and --outdir.", err=True)
+        raise typer.Exit(code=1)
+
+    try:
+        result = run_target_cards(results_dir=results, outdir=outdir, top_n=top_n)
+    except (OSError, TypeError, ValueError) as error:
+        typer.echo(f"Target card generation failed: {error}", err=True)
+        raise typer.Exit(code=1) from error
+
+    typer.echo(json.dumps({"n_cards": result["n_cards"]}, indent=2))
+    typer.echo(f"Wrote target cards to {outdir}")
 
 
 @app.command("run")
