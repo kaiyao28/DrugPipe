@@ -11,6 +11,7 @@ from osteo_target_gwas import __version__
 from osteo_target_gwas.config import load_default_config
 from osteo_target_gwas.io.read_gwas import read_gwas
 from osteo_target_gwas.io.validate_schema import validate_gwas_schema
+from osteo_target_gwas.qc.filter_sumstats import run_gwas_qc
 
 app = typer.Typer(
     help=(
@@ -92,9 +93,67 @@ def validate(
 
 
 @app.command("qc")
-def qc() -> None:
+def qc(
+    gwas: Path | None = typer.Option(
+        None,
+        "--gwas",
+        help="GWAS summary-statistics file to QC.",
+        exists=True,
+        dir_okay=False,
+        readable=True,
+    ),
+    outdir: Path = typer.Option(
+        Path("results/example"),
+        "--outdir",
+        help="Trait output directory; QC files are written under its qc/ subdirectory.",
+        file_okay=False,
+    ),
+    config: Path = typer.Option(
+        Path("config/default.yaml"),
+        "--config",
+        help="Pipeline configuration YAML.",
+        exists=True,
+        dir_okay=False,
+        readable=True,
+    ),
+    min_info: float | None = typer.Option(
+        None,
+        "--min-info",
+        help="Minimum imputation INFO score; defaults to config.",
+    ),
+    min_maf: float | None = typer.Option(
+        None,
+        "--min-maf",
+        help="Minimum minor allele frequency; defaults to config.",
+    ),
+    remove_ambiguous: bool | None = typer.Option(
+        None,
+        "--remove-ambiguous/--keep-ambiguous",
+        help="Remove A/T and C/G SNPs; defaults to config.",
+    ),
+) -> None:
     """Run GWAS summary-statistic quality control."""
-    _placeholder("qc")
+    if gwas is None:
+        _placeholder("qc")
+        return
+
+    try:
+        result = run_gwas_qc(
+            gwas_path=gwas,
+            outdir=outdir,
+            config_path=config,
+            min_info=min_info,
+            min_maf=min_maf,
+            remove_ambiguous=remove_ambiguous,
+        )
+    except (OSError, TypeError, ValueError) as error:
+        typer.echo(f"QC failed: {error}", err=True)
+        raise typer.Exit(code=1) from error
+
+    typer.echo(json.dumps(result["summary"], indent=2))
+    typer.echo(f"Wrote harmonised summary statistics to {result['harmonised_sumstats_path']}")
+    typer.echo(f"Wrote QC summary to {result['qc_summary_path']}")
+    typer.echo(f"Wrote QC report to {result['qc_report_path']}")
 
 
 @app.command("define-loci")
