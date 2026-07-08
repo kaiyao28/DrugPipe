@@ -8,12 +8,12 @@ not be committed here.
 `examples/minimal/` describes the smallest useful DrugPipe run: GWAS summary
 statistics plus gene annotation.
 
-## Osteoporosis Demo
+## Osteoporosis Example
 
-`examples/osteoporosis_demo/` points to the synthetic end-to-end example under
-`data/example/` and `make example`.
+`examples/osteoporosis/` points to the synthetic end-to-end example under
+`data/example/` and `make demo`.
 
-## Plotting Demo
+## Plotting Example
 
-`examples/plotting_demo/` documents expected plotting inputs. Plotting code is a
-planned extension; see `docs/plotting_recipes.md`.
+`examples/plotting/` documents conventional plotting inputs. See
+`docs/plotting_recipes.md`.

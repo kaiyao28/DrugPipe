@@ -1,11 +1,11 @@
-# Osteoporosis Demo
+# Osteoporosis Example
 
 The synthetic osteoporosis/BMD/fracture-style demo lives in `data/example/`.
 
 Run it with:
 
 ```bash
-make example
+make demo
 ```
 
 Primary outputs:

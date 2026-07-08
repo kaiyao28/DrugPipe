@@ -1,4 +1,4 @@
-# Plotting Demo
+# Plotting Example
 
 DrugPipe documents standard plotting recipes for common genetics and omics
 outputs:

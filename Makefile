@@ -1,12 +1,12 @@
-.PHONY: install test example clean
+.PHONY: install test example demo clean
 
 install:
-	python -m pip install --upgrade pip
-	python -m pip install -e .
-	python -m pip install pytest
+	python3 -m pip install --upgrade pip
+	python3 -m pip install -e .
+	python3 -m pip install pytest
 
 test:
-	python -m pytest
+	python3 -m pytest
 
 example:
 	osteo-target-gwas run \
@@ -25,6 +25,8 @@ example:
 	  --outdir results/example \
 	  --report reports/example/target_prioritisation_report.md \
 	  --cards-dir reports/example/target_cards
+
+demo: example
 
 clean:
 	rm -rf results/example reports/example

@@ -1,18 +1,25 @@
-# Workflow Examples
+# Analysis Modules
 
-These shell scripts show a staged DrugPipe analysis pattern. They are examples,
-not a workflow engine. Real projects should run upstream heavy analyses with
-their chosen tools, then import summary-level outputs into DrugPipe.
+DrugPipe is organised around analysis themes rather than one mandatory
+end-to-end process. Each module documents the scientific question, common
+external tools, public resources, expected DrugPipe summary table and
+interpretation cautions.
 
-Recommended order:
+| Goal | Module |
+| --- | --- |
+| GWAS QC and loci | [01_gwas_qc](01_gwas_qc/README.md) |
+| map loci to genes | [02_locus_to_gene](02_locus_to_gene/README.md) |
+| interpret fine-mapping | [03_finemapping](03_finemapping/README.md) |
+| integrate QTL evidence | [04_qtl_colocalisation](04_qtl_colocalisation/README.md) |
+| analyse expression/cell context | [05_expression_cell_context](05_expression_cell_context/README.md) |
+| pathway analysis | [06_pathway_enrichment](06_pathway_enrichment/README.md) |
+| MR target validation | [07_mr_target_validation](07_mr_target_validation/README.md) |
+| safety/druggability | [08_safety_druggability](08_safety_druggability/README.md) |
+| integrate target evidence | [09_target_integration](09_target_integration/README.md) |
+| make standard figures | [10_standard_figures](10_standard_figures/README.md) |
 
-```text
-01_gwas_qc_and_loci.sh
-02_gene_mapping_and_finemap_import.sh
-03_qtl_and_omics_evidence.sh
-04_mr_safety_druggability.sh
-05_target_scoring_and_reports.sh
-06_standard_figures.sh
+For the toy integration demo, run:
+
+```bash
+make demo
 ```
-
-For the synthetic demo, `make example` runs the whole local-file workflow.
