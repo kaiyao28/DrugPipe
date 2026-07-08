@@ -1,168 +1,185 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1560" height="700" viewBox="0 0 1560 700" role="img" aria-labelledby="title desc">
-  <title id="title">DrugPipe workflow</title>
-  <desc id="desc">From GWAS loci to ranked target hypotheses using integrated genetic, molecular and druggability evidence.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" role="img" aria-labelledby="title desc">
+  <title id="title">DrugPipe analysis map</title>
+  <desc id="desc">A modular post-GWAS target-discovery analysis map showing independently accessible analysis modules, standard evidence tables, and reusable outputs for target integration, figures, reports and ranked hypotheses.</desc>
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#f8fafc"/>
       <stop offset="1" stop-color="#eef2f7"/>
     </linearGradient>
     <linearGradient id="blueCard" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#e0f2fe"/>
-      <stop offset="1" stop-color="#eff6ff"/>
+      <stop offset="0" stop-color="#dff3ff"/>
+      <stop offset="1" stop-color="#f0f7ff"/>
     </linearGradient>
     <linearGradient id="greenCard" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#dcfce7"/>
-      <stop offset="1" stop-color="#ecfdf5"/>
+      <stop offset="0" stop-color="#def7e8"/>
+      <stop offset="1" stop-color="#f0fdf4"/>
+    </linearGradient>
+    <linearGradient id="neutralCard" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f1f5f9"/>
+      <stop offset="1" stop-color="#ffffff"/>
     </linearGradient>
     <linearGradient id="orangeCard" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#ffedd5"/>
-      <stop offset="1" stop-color="#fffbeb"/>
+      <stop offset="1" stop-color="#fff7ed"/>
     </linearGradient>
-    <filter id="shadow" x="-18%" y="-18%" width="136%" height="136%">
-      <feDropShadow dx="0" dy="12" stdDeviation="12" flood-color="#0f172a" flood-opacity="0.12"/>
+    <linearGradient id="purpleCard" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ede9fe"/>
+      <stop offset="1" stop-color="#f5f3ff"/>
+    </linearGradient>
+    <filter id="shadow" x="-14%" y="-18%" width="128%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#0f172a" flood-opacity="0.10"/>
     </filter>
-    <filter id="softShadow" x="-18%" y="-18%" width="136%" height="136%">
-      <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#0f172a" flood-opacity="0.09"/>
+    <filter id="softShadow" x="-12%" y="-15%" width="124%" height="132%">
+      <feDropShadow dx="0" dy="7" stdDeviation="7" flood-color="#0f172a" flood-opacity="0.075"/>
     </filter>
     <marker id="arrow" markerWidth="12" markerHeight="12" refX="9" refY="6" orient="auto">
-      <path d="M0 0 L12 6 L0 12 Z" fill="#64748b"/>
-    </marker>
-    <marker id="greenArrow" markerWidth="11" markerHeight="11" refX="8" refY="5.5" orient="auto">
-      <path d="M0 0 L11 5.5 L0 11 Z" fill="#22c55e"/>
+      <path d="M0 0 L12 6 L0 12 Z" fill="#94a3b8"/>
     </marker>
     <style>
-      .title { font: 800 38px Inter, Arial, sans-serif; fill: #0f172a; }
-      .subtitle { font: 19px Inter, Arial, sans-serif; fill: #475569; }
-      .card-title { font: 800 25px Inter, Arial, sans-serif; fill: #0f172a; }
-      .card-sub { font: 17px Inter, Arial, sans-serif; fill: #475569; }
-      .hub-title { font: 800 29px Inter, Arial, sans-serif; fill: #14532d; }
-      .hub-sub { font: 17px Inter, Arial, sans-serif; fill: #166534; }
-      .chip-title { font: 800 18px Inter, Arial, sans-serif; fill: #14532d; }
-      .chip-sub { font: 15px Inter, Arial, sans-serif; fill: #475569; }
-      .section { font: 700 15px Inter, Arial, sans-serif; fill: #64748b; letter-spacing: 0.4px; }
+      .title { font: 800 40px Inter, Arial, sans-serif; fill: #0f172a; letter-spacing: 0; }
+      .subtitle { font: 20px Inter, Arial, sans-serif; fill: #475569; letter-spacing: 0; }
+      .zone { font: 800 14px Inter, Arial, sans-serif; fill: #64748b; letter-spacing: 1.5px; }
+      .note-title { font: 800 18px Inter, Arial, sans-serif; fill: #334155; letter-spacing: 0; }
+      .note { font: 15px Inter, Arial, sans-serif; fill: #64748b; letter-spacing: 0; }
+      .card-title { font: 800 21px Inter, Arial, sans-serif; fill: #0f172a; letter-spacing: 0; }
+      .card-sub { font: 16px Inter, Arial, sans-serif; fill: #475569; letter-spacing: 0; }
+      .table-title { font: 800 29px Inter, Arial, sans-serif; fill: #14532d; letter-spacing: 0; }
+      .table-sub { font: 18px Inter, Arial, sans-serif; fill: #166534; letter-spacing: 0; }
+      .output-title { font: 800 23px Inter, Arial, sans-serif; fill: #0f172a; letter-spacing: 0; }
+      .output-sub { font: 16px Inter, Arial, sans-serif; fill: #475569; letter-spacing: 0; }
       .blue { fill: url(#blueCard); stroke: #0284c7; stroke-width: 2; }
       .green { fill: url(#greenCard); stroke: #16a34a; stroke-width: 2; }
+      .neutral { fill: url(#neutralCard); stroke: #94a3b8; stroke-width: 1.6; }
       .orange { fill: url(#orangeCard); stroke: #d97706; stroke-width: 2; }
-      .flow { stroke: #64748b; stroke-width: 3; fill: none; marker-end: url(#arrow); stroke-linecap: round; }
-      .feed { stroke: #22c55e; stroke-width: 2.4; fill: none; marker-end: url(#greenArrow); stroke-linecap: round; opacity: 0.85; }
-      .motif { stroke: #0284c7; stroke-width: 3; fill: none; stroke-linecap: round; }
-      .dot { fill: #0284c7; opacity: 0.85; }
+      .purple { fill: url(#purpleCard); stroke: #7c3aed; stroke-width: 2; }
+      .guide { stroke: #94a3b8; stroke-width: 2; fill: none; stroke-linecap: round; opacity: 0.38; }
+      .flow { stroke: #94a3b8; stroke-width: 2.6; fill: none; marker-end: url(#arrow); stroke-linecap: round; opacity: 0.88; }
+      .dash { stroke: #94a3b8; stroke-width: 2; fill: none; stroke-dasharray: 5 8; stroke-linecap: round; opacity: 0.42; }
+      .tiny-dot { fill: #0284c7; opacity: 0.8; }
+      .tiny-green { fill: #16a34a; opacity: 0.75; }
+      .tiny-purple { fill: #7c3aed; opacity: 0.72; }
     </style>
   </defs>
 
-  <rect width="1560" height="700" fill="url(#bg)"/>
-  <path d="M80 600 C260 548 410 642 612 590 C828 535 1014 571 1208 520 C1340 485 1440 480 1508 496" fill="none" stroke="#dbeafe" stroke-width="34" opacity="0.45"/>
+  <rect width="1600" height="1000" fill="url(#bg)"/>
+  <path d="M80 200 C270 135 430 205 612 150 C820 88 1010 160 1190 110 C1336 70 1450 86 1520 130" fill="none" stroke="#dbeafe" stroke-width="38" opacity="0.42"/>
+  <path d="M110 812 C306 762 478 848 688 794 C905 738 1092 784 1286 742 C1412 714 1490 724 1530 758" fill="none" stroke="#e9d5ff" stroke-width="32" opacity="0.34"/>
 
-  <text class="title" x="70" y="70">DrugPipe workflow</text>
-  <text class="subtitle" x="70" y="106">From GWAS loci to ranked target hypotheses using integrated genetic, molecular and druggability evidence.</text>
+  <text class="title" x="70" y="66">DrugPipe analysis map</text>
+  <text class="subtitle" x="70" y="104">Modular post-GWAS analyses, standard evidence tables and reusable interpretation code.</text>
 
-  <text class="section" x="92" y="164">DATA INPUT</text>
-  <g transform="translate(70 188)" filter="url(#shadow)">
-    <rect class="blue" x="0" y="0" width="210" height="150" rx="24"/>
-    <text class="card-title" x="32" y="55">GWAS</text>
-    <text class="card-sub" x="32" y="88">summary statistics</text>
-    <path class="motif" d="M32 116 C48 99 62 132 80 112 C98 92 112 130 130 110 C146 94 160 115 178 100"/>
-    <circle class="dot" cx="50" cy="114" r="5"/>
-    <circle class="dot" cx="86" cy="109" r="5"/>
-    <circle class="dot" cx="126" cy="111" r="5"/>
-    <circle class="dot" cx="166" cy="104" r="5"/>
-  </g>
+  <text class="zone" x="232" y="150">ENTER AT THE RELEVANT ANALYSIS STEP</text>
+  <text class="zone" x="1060" y="150">MODULAR INPUTS</text>
 
-  <path class="flow" d="M280 263 H332"/>
+  <g filter="url(#shadow)" aria-label="gwas">
+  <rect class="blue" x="180" y="176" width="370" height="86" rx="20"/>
+  <text class="card-title" x="212" y="212"><tspan x="212" dy="0">GWAS QC + loci</tspan></text>
+  <text class="card-sub" x="212" y="241"><tspan x="212" dy="0">harmonisation / regions</tspan></text>
+  <circle class="tiny-dot" cx="498" cy="207" r="5"/>
+<circle class="tiny-dot" cx="476" cy="231" r="4"/>
+</g>
 
-  <text class="section" x="350" y="164">GENETIC INTERPRETATION</text>
-  <g transform="translate(332 188)" filter="url(#shadow)">
-    <rect class="blue" x="0" y="0" width="206" height="150" rx="24"/>
-    <text class="card-title" x="30" y="55">Loci</text>
-    <text class="card-sub" x="30" y="88">lead SNP windows</text>
-    <g opacity="0.9">
-      <line x1="30" y1="119" x2="176" y2="119" stroke="#0284c7" stroke-width="4" stroke-linecap="round"/>
-      <circle class="dot" cx="60" cy="119" r="6"/>
-      <circle class="dot" cx="112" cy="119" r="8"/>
-      <circle class="dot" cx="154" cy="119" r="5"/>
-    </g>
-  </g>
+  <g filter="url(#shadow)" aria-label="finemap">
+  <rect class="blue" x="590" y="176" width="370" height="86" rx="20"/>
+  <text class="card-title" x="622" y="212"><tspan x="622" dy="0">Fine-mapping</tspan></text>
+  <text class="card-sub" x="622" y="241"><tspan x="622" dy="0">PIP / credible sets</tspan></text>
+  <path d="M872 225 H918" stroke="#0284c7" stroke-width="4" stroke-linecap="round" opacity="0.7"/><circle class="tiny-dot" cx="890" cy="225" r="5"/><circle class="tiny-dot" cx="916" cy="225" r="4"/>
+</g>
 
-  <path class="flow" d="M538 263 H590"/>
+  <g filter="url(#shadow)" aria-label="l2g">
+  <rect class="blue" x="180" y="286" width="370" height="86" rx="20"/>
+  <text class="card-title" x="212" y="322"><tspan x="212" dy="0">Locus-to-gene</tspan></text>
+  <text class="card-sub" x="212" y="351"><tspan x="212" dy="0">candidate gene evidence</tspan></text>
+  <rect x="450" y="319" width="54" height="12" rx="6" fill="#0ea5e9" opacity="0.75"/>
+<rect x="416" y="341" width="82" height="12" rx="6" fill="#7dd3fc" opacity="0.85"/>
+</g>
 
-  <g transform="translate(590 188)" filter="url(#shadow)">
-    <rect class="blue" x="0" y="0" width="240" height="150" rx="24"/>
-    <text class="card-title" x="30" y="55">Candidate genes</text>
-    <text class="card-sub" x="30" y="88">locus-to-gene mapping</text>
-    <g opacity="0.9">
-      <rect x="32" y="110" width="44" height="14" rx="7" fill="#38bdf8"/>
-      <rect x="88" y="110" width="66" height="14" rx="7" fill="#0ea5e9"/>
-      <rect x="166" y="110" width="42" height="14" rx="7" fill="#7dd3fc"/>
-      <line x1="32" y1="135" x2="208" y2="135" stroke="#0284c7" stroke-width="3" stroke-linecap="round"/>
-    </g>
-  </g>
+  <g filter="url(#shadow)" aria-label="qtl">
+  <rect class="blue" x="590" y="286" width="370" height="86" rx="20"/>
+  <text class="card-title" x="622" y="322"><tspan x="622" dy="0">QTL / colocalisation</tspan></text>
+  <text class="card-sub" x="622" y="351"><tspan x="622" dy="0">molecular links</tspan></text>
+  <circle class="tiny-dot" cx="864" cy="327" r="5"/><circle class="tiny-dot" cx="890" cy="345" r="5"/><path d="M864 327 L890 345 L918 323" stroke="#0284c7" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.7"/>
+</g>
 
-  <path class="flow" d="M830 263 H890"/>
+  <g filter="url(#shadow)" aria-label="expression">
+  <rect class="green" x="180" y="396" width="370" height="86" rx="20"/>
+  <text class="card-title" x="212" y="432"><tspan x="212" dy="0">Expression + cell context</tspan></text>
+  <text class="card-sub" x="212" y="461"><tspan x="212" dy="0">PCA / groups / cell types</tspan></text>
 
-  <text class="section" x="920" y="164">EVIDENCE SCORING</text>
-  <g transform="translate(890 170)" filter="url(#shadow)">
-    <rect class="green" x="0" y="0" width="270" height="186" rx="30"/>
-    <text class="hub-title" x="34" y="65">Evidence</text>
-    <text class="hub-title" x="34" y="100">integration</text>
-    <text class="hub-sub" x="34" y="135">genetic + molecular</text>
-    <text class="hub-sub" x="34" y="160">+ biological support</text>
-    <circle cx="224" cy="56" r="26" fill="#bbf7d0" stroke="#16a34a" stroke-width="2"/>
-    <path d="M210 56 H238 M224 42 V70" stroke="#16a34a" stroke-width="4" stroke-linecap="round"/>
-  </g>
+</g>
 
-  <path class="flow" d="M1160 263 H1208"/>
+  <g filter="url(#shadow)" aria-label="pathways">
+  <rect class="green" x="590" y="396" width="370" height="86" rx="20"/>
+  <text class="card-title" x="622" y="432"><tspan x="622" dy="0">Pathways + enrichment</tspan></text>
+  <text class="card-sub" x="622" y="461"><tspan x="622" dy="0">biological mechanisms</tspan></text>
+  <path d="M854 435 C874 411 900 463 922 439" stroke="#16a34a" stroke-width="4" fill="none" stroke-linecap="round" opacity="0.58"/>
+</g>
 
-  <text class="section" x="1224" y="164">OUTPUTS</text>
-  <g transform="translate(1208 188)" filter="url(#shadow)">
-    <rect class="orange" x="0" y="0" width="166" height="150" rx="24"/>
-    <text class="card-title" x="24" y="55">Ranked</text>
-    <text class="card-title" x="24" y="84">targets</text>
-    <text class="card-sub" x="24" y="116">prioritised</text>
-    <text class="card-sub" x="24" y="137">hypotheses</text>
-  </g>
+  <g filter="url(#shadow)" aria-label="mr">
+  <rect class="green" x="180" y="506" width="370" height="86" rx="20"/>
+  <text class="card-title" x="212" y="542"><tspan x="212" dy="0">MR target validation</tspan></text>
+  <text class="card-sub" x="212" y="571"><tspan x="212" dy="0">effect / direction evidence</tspan></text>
+  <path d="M420 554 H494" stroke="#16a34a" stroke-width="4" stroke-linecap="round" opacity="0.72"/><path d="M482 545 L496 554 L482 563" stroke="#16a34a" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.72"/>
+</g>
 
-  <path class="flow" d="M1374 263 H1412"/>
+  <g filter="url(#shadow)" aria-label="safety">
+  <rect class="green" x="590" y="506" width="370" height="86" rx="20"/>
+  <text class="card-title" x="622" y="542"><tspan x="622" dy="0">Safety + druggability</tspan></text>
+  <text class="card-sub" x="622" y="571"><tspan x="622" dy="0">liability / tractability</tspan></text>
+  <path d="M872 524 L899 537 L926 524 V548 C926 567 912 579 899 587 C886 579 872 567 872 548 Z" fill="#bbf7d0" stroke="#16a34a" stroke-width="2" opacity="0.9"/>
+</g>
 
-  <g transform="translate(1412 188)" filter="url(#shadow)">
-    <rect class="orange" x="0" y="0" width="128" height="150" rx="24"/>
-    <text class="card-title" x="20" y="48">Reports</text>
-    <text class="card-title" x="20" y="77">+ cards</text>
-    <text class="card-sub" x="20" y="110">Markdown</text>
-    <text class="card-sub" x="20" y="131">outputs</text>
-  </g>
+  <g filter="url(#softShadow)" aria-label="note">
+  <rect class="neutral" x="1030" y="176" width="400" height="142" rx="24"/>
+  <text class="note-title" x="1062" y="220"><tspan x="1062" dy="0">Generate evidence where it fits</tspan></text>
+  <text class="note" x="1062" y="250"><tspan x="1062" dy="0">Established tools, public resources</tspan><tspan x="1062" dy="24">or local analyses can produce each</tspan><tspan x="1062" dy="24">module&#x27;s reviewed summary outputs.</tspan></text>
 
-  <text class="section" x="820" y="430">EVIDENCE LAYERS</text>
-  <path class="feed" d="M972 414 C986 386 1000 368 1018 356"/>
+</g>
 
-  <g transform="translate(510 462)" filter="url(#softShadow)">
-    <rect class="green" x="0" y="0" width="172" height="94" rx="20"/>
-    <text class="chip-title" x="24" y="36">Fine-mapping</text>
-    <text class="chip-sub" x="24" y="63">PIP / credible</text>
-    <text class="chip-sub" x="24" y="81">sets</text>
-  </g>
+  <g filter="url(#shadow)" aria-label="evidence_tables">
+  <rect class="green" x="300" y="642" width="1000" height="100" rx="26"/>
+  <text class="table-title" x="358" y="685"><tspan x="358" dy="0">Standard evidence tables</tspan></text>
+  <text class="table-sub" x="358" y="715"><tspan x="358" dy="0">documented schemas • reviewed outputs • reusable between analysis steps</tspan></text>
+  <rect x="1162" y="672" width="86" height="10" rx="5" fill="#16a34a" opacity="0.72"/>
+<rect x="1126" y="697" width="122" height="10" rx="5" fill="#86efac" opacity="0.72"/>
+<rect x="1088" y="722" width="160" height="10" rx="5" fill="#bbf7d0" opacity="0.72"/>
+</g>
 
-  <g transform="translate(706 462)" filter="url(#softShadow)">
-    <rect class="green" x="0" y="0" width="172" height="94" rx="20"/>
-    <text class="chip-title" x="28" y="36">QTL / omics</text>
-    <text class="chip-sub" x="28" y="63">molecular links</text>
-  </g>
+  <g filter="url(#softShadow)" aria-label="figures">
+  <rect class="purple" x="150" y="780" width="420" height="74" rx="22"/>
+  <text class="output-title" x="182" y="812"><tspan x="182" dy="0">Standard figures</tspan></text>
+  <text class="output-sub" x="182" y="838"><tspan x="182" dy="0">PCA / volcano / QQ / forest / heatmaps</tspan></text>
+  <circle class="tiny-purple" cx="528" cy="812" r="5"/>
+</g>
 
-  <g transform="translate(902 462)" filter="url(#softShadow)">
-    <rect class="green" x="0" y="0" width="172" height="94" rx="20"/>
-    <text class="chip-title" x="24" y="36">Bone biology</text>
-    <text class="chip-sub" x="24" y="63">cells / pathways</text>
-  </g>
+  <g filter="url(#shadow)" aria-label="target_integration">
+  <rect class="orange" x="610" y="768" width="380" height="74" rx="22"/>
+  <text class="output-title" x="642" y="800"><tspan x="642" dy="0">Target integration</tspan></text>
+  <text class="output-sub" x="642" y="826"><tspan x="642" dy="0">combine evidence layers</tspan></text>
 
-  <g transform="translate(1098 462)" filter="url(#softShadow)">
-    <rect class="green" x="0" y="0" width="172" height="94" rx="20"/>
-    <text class="chip-title" x="26" y="36">MR + safety</text>
-    <text class="chip-sub" x="24" y="63">target and</text>
-    <text class="chip-sub" x="24" y="81">liability scans</text>
-  </g>
+</g>
 
-  <g transform="translate(1294 462)" filter="url(#softShadow)">
-    <rect class="green" x="0" y="0" width="172" height="94" rx="20"/>
-    <text class="chip-title" x="22" y="36">Druggability</text>
-    <text class="chip-sub" x="22" y="63">tractability</text>
-  </g>
+  <g filter="url(#softShadow)" aria-label="reports">
+  <rect class="orange" x="1030" y="780" width="420" height="74" rx="22"/>
+  <text class="output-title" x="1062" y="812"><tspan x="1062" dy="0">Interpretation + reports</tspan></text>
+  <text class="output-sub" x="1062" y="838"><tspan x="1062" dy="0">guidance / target cards / Markdown</tspan></text>
+
+</g>
+
+  <g filter="url(#shadow)" aria-label="ranked">
+  <rect class="orange" x="540" y="884" width="520" height="56" rx="24"/>
+  <text class="output-title" x="572" y="909"><tspan x="572" dy="0">Ranked target hypotheses</tspan></text>
+  <text class="output-sub" x="572" y="931"><tspan x="572" dy="0">prioritisation for follow-up</tspan></text>
+
+</g>
+
+  <path class="guide" d="M168 620 H972"/>
+  <path class="guide" d="M168 620 C168 644 196 654 228 654"/>
+  <path class="guide" d="M972 620 C972 644 944 654 912 654"/>
+  <path class="dash" d="M570 620 V642"/>
+
+  <path class="flow" d="M550 742 C550 761 360 761 360 780"/>
+  <path class="flow" d="M800 742 L800 768"/>
+  <path class="flow" d="M1050 742 C1050 761 1240 761 1240 780"/>
+  <path class="flow" d="M800 842 L800 884"/>
 </svg>
