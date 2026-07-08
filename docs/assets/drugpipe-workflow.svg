@@ -66,9 +66,9 @@
   <path d="M110 812 C306 762 478 848 688 794 C905 738 1092 784 1286 742 C1412 714 1490 724 1530 758" fill="none" stroke="#e9d5ff" stroke-width="32" opacity="0.34"/>
 
   <text class="title" x="70" y="66">DrugPipe analysis map</text>
-  <text class="subtitle" x="70" y="104">Modular post-GWAS analyses, standard evidence tables and reusable interpretation code.</text>
+  <text class="subtitle" x="70" y="104">Reusable analysis modules, standard evidence schemas and post-GWAS interpretation workflows.</text>
 
-  <text class="zone" x="232" y="150">ENTER AT THE RELEVANT ANALYSIS STEP</text>
+  <text class="zone" x="380" y="150">CHOOSE THE RELEVANT ANALYSIS MODULE</text>
   <text class="zone" x="1060" y="150">MODULAR INPUTS</text>
 
   <g filter="url(#shadow)" aria-label="gwas">
@@ -130,9 +130,9 @@
 </g>
 
   <g filter="url(#softShadow)" aria-label="note">
-  <rect class="neutral" x="1030" y="176" width="400" height="142" rx="24"/>
-  <text class="note-title" x="1062" y="220"><tspan x="1062" dy="0">Generate evidence where it fits</tspan></text>
-  <text class="note" x="1062" y="250"><tspan x="1062" dy="0">Established tools, public resources</tspan><tspan x="1062" dy="24">or local analyses can produce each</tspan><tspan x="1062" dy="24">module&#x27;s reviewed summary outputs.</tspan></text>
+  <rect class="neutral" x="1030" y="176" width="400" height="160" rx="24"/>
+  <text class="note-title" x="1062" y="216"><tspan x="1062" dy="0">Use the tools and data</tspan><tspan x="1062" dy="24">appropriate to each analysis</tspan></text>
+  <text class="note" x="1062" y="266"><tspan x="1062" dy="0">Established tools, public resources</tspan><tspan x="1062" dy="24">or local analyses can produce each</tspan><tspan x="1062" dy="24">module&#x27;s reviewed summary outputs.</tspan></text>
 
 </g>
 
@@ -177,6 +177,7 @@
   <path class="guide" d="M168 620 C168 644 196 654 228 654"/>
   <path class="guide" d="M972 620 C972 644 944 654 912 654"/>
   <path class="dash" d="M570 620 V642"/>
+  <text class="zone" x="648" y="632">STANDARD EVIDENCE LAYER</text>
 
   <path class="flow" d="M550 742 C550 761 360 761 360 780"/>
   <path class="flow" d="M800 742 L800 768"/>

@@ -303,6 +303,23 @@ def validate_text_capacity(nodes: dict[str, Node]) -> None:
             font_size, weight = class_sizes[node.subtitle_class]
             if estimate_text_width(line, font_size, weight) > node.usable_width:
                 raise ValueError(f"Subtitle text too wide for node '{node.name}': {line}")
+        if node.title_lines and node.subtitle_lines:
+            title_last_baseline = node.title_y_offset + (len(node.title_lines) - 1) * node.line_height
+            if node.subtitle_y_offset - title_last_baseline < 22:
+                raise ValueError(f"Title and subtitle text overlap in node '{node.name}'")
+        last_baseline = 0.0
+        if node.title_lines:
+            last_baseline = max(
+                last_baseline,
+                node.title_y_offset + (len(node.title_lines) - 1) * node.line_height,
+            )
+        if node.subtitle_lines:
+            last_baseline = max(
+                last_baseline,
+                node.subtitle_y_offset + (len(node.subtitle_lines) - 1) * node.line_height,
+            )
+        if last_baseline > node.height - 6:
+            raise ValueError(f"Text block too tall for node '{node.name}'")
 
 
 def validate_connectors(connectors: tuple[Connector, ...], nodes: dict[str, Node]) -> None:
@@ -350,8 +367,8 @@ def build_nodes() -> dict[str, Node]:
                 x=1030,
                 y=176,
                 width=400,
-                height=142,
-                title_lines=("Generate evidence where it fits",),
+                height=160,
+                title_lines=("Use the tools and data", "appropriate to each analysis"),
                 subtitle_lines=(
                     "Established tools, public resources",
                     "or local analyses can produce each",
@@ -360,8 +377,8 @@ def build_nodes() -> dict[str, Node]:
                 style="neutral",
                 title_class="note-title",
                 subtitle_class="note",
-                title_y_offset=44,
-                subtitle_y_offset=74,
+                title_y_offset=40,
+                subtitle_y_offset=90,
                 line_height=24,
                 radius=24,
                 filter_id="softShadow",
@@ -551,9 +568,9 @@ def build_svg(nodes: dict[str, Node], connectors: tuple[Connector, ...]) -> str:
   <path d="M110 812 C306 762 478 848 688 794 C905 738 1092 784 1286 742 C1412 714 1490 724 1530 758" fill="none" stroke="#e9d5ff" stroke-width="32" opacity="0.34"/>
 
   <text class="title" x="70" y="66">DrugPipe analysis map</text>
-  <text class="subtitle" x="70" y="104">Modular post-GWAS analyses, standard evidence tables and reusable interpretation code.</text>
+  <text class="subtitle" x="70" y="104">Reusable analysis modules, standard evidence schemas and post-GWAS interpretation workflows.</text>
 
-  <text class="zone" x="232" y="150">ENTER AT THE RELEVANT ANALYSIS STEP</text>
+  <text class="zone" x="380" y="150">CHOOSE THE RELEVANT ANALYSIS MODULE</text>
   <text class="zone" x="1060" y="150">MODULAR INPUTS</text>
 
   {cards}
@@ -562,6 +579,7 @@ def build_svg(nodes: dict[str, Node], connectors: tuple[Connector, ...]) -> str:
   <path class="guide" d="M{module_grid_left:.0f} {module_grid_bottom:.0f} C{module_grid_left:.0f} {module_grid_bottom + 24:.0f} {module_grid_left + 28:.0f} {module_grid_bottom + 34:.0f} {module_grid_left + 60:.0f} {module_grid_bottom + 34:.0f}"/>
   <path class="guide" d="M{module_grid_right:.0f} {module_grid_bottom:.0f} C{module_grid_right:.0f} {module_grid_bottom + 24:.0f} {module_grid_right - 28:.0f} {module_grid_bottom + 34:.0f} {module_grid_right - 60:.0f} {module_grid_bottom + 34:.0f}"/>
   <path class="dash" d="M{(module_grid_left + module_grid_right) / 2:.0f} {module_grid_bottom:.0f} V{evidence.y:.0f}"/>
+  <text class="zone" x="648" y="632">STANDARD EVIDENCE LAYER</text>
 
   {connector_svg}
 </svg>
