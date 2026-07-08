@@ -7,8 +7,9 @@
 ![CLI](https://img.shields.io/badge/CLI-osteo--target--gwas-0f766e)
 ![Status](https://img.shields.io/badge/status-local--file%20MVP-b45309)
 
-DrugPipe is a lightweight local-file pipeline for post-GWAS target prioritisation
-in osteoporosis, bone mineral density and fracture-risk studies.
+DrugPipe is a lightweight local-file pipeline and reference code library for
+post-GWAS target prioritisation in osteoporosis, bone mineral density and
+fracture-risk studies.
 
 It starts from GWAS summary statistics, combines genetic and biological evidence,
 and produces ranked candidate drug targets plus Markdown reports and target
@@ -43,6 +44,10 @@ results/example/
 reports/example/
 ```
 
+For real studies, treat DrugPipe as a modular workflow: run heavy analyses such
+as fine-mapping, colocalisation, expression preprocessing and MR with specialist
+tools, then import their summary-level outputs into DrugPipe step by step.
+
 ## What DrugPipe Does
 
 GWAS can identify genomic regions associated with osteoporosis or bone mineral
@@ -67,6 +72,16 @@ context, annotate druggability, rank targets, and generate Markdown reports.
 
 It does not yet run full external fine-mapping, colocalisation, or MR engines
 from raw inputs. Those stages currently expect precomputed result tables.
+
+## Documentation
+
+- [Overview](docs/overview.md)
+- [Input and output schemas](docs/schemas.md)
+- [Public data sources](docs/data_sources.md)
+- [External tools](docs/external_tools.md)
+- [Evidence interpretation](docs/interpretation.md)
+- [Plotting recipes](docs/plotting_recipes.md)
+- [Workflow examples](workflows/README.md)
 
 ## Installation
 
@@ -118,6 +133,10 @@ osteo-target-gwas run \
 
 Required inputs are `--gwas`, `--genes`, `--config`, and `--outdir`. Optional
 evidence files are skipped with warnings when they are not supplied.
+
+For real datasets, prefer the staged scripts in `workflows/` over one large
+command. They show the intended order while keeping upstream heavy methods
+modular.
 
 ## Main Outputs
 
@@ -280,6 +299,9 @@ Typical inputs include:
 | Druggability | Target class, modality, known drug, and safety annotations |
 
 Expected external resources are documented in `config/data_sources.yaml`.
+See also [docs/data_sources.md](docs/data_sources.md) and
+[docs/external_tools.md](docs/external_tools.md) for practical guidance on
+public resources and upstream methods.
 
 ## Project Structure
 
