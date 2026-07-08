@@ -1,0 +1,104 @@
+theme_sets:
+  scientific-default:
+    input:
+      fill: "#e0f2fe"
+      border: "#0284c7"
+      text: "#0f172a"
+    analysis:
+      fill: "#dcfce7"
+      border: "#16a34a"
+      text: "#0f172a"
+    biology:
+      fill: "#ecfdf5"
+      border: "#15803d"
+      text: "#0f172a"
+    integration:
+      fill: "#fffbeb"
+      border: "#d97706"
+      text: "#0f172a"
+    output:
+      fill: "#f5f3ff"
+      border: "#7c3aed"
+      text: "#0f172a"
+    neutral:
+      fill: "#f1f5f9"
+      border: "#64748b"
+      text: "#334155"
+
+  minimal-monochrome:
+    input:
+      fill: "#f8fafc"
+      border: "#475569"
+      text: "#0f172a"
+    analysis:
+      fill: "#f1f5f9"
+      border: "#334155"
+      text: "#0f172a"
+    biology:
+      fill: "#f8fafc"
+      border: "#64748b"
+      text: "#0f172a"
+    integration:
+      fill: "#e2e8f0"
+      border: "#0f766e"
+      text: "#0f172a"
+    output:
+      fill: "#ffffff"
+      border: "#475569"
+      text: "#0f172a"
+    neutral:
+      fill: "#f8fafc"
+      border: "#94a3b8"
+      text: "#334155"
+
+  genetics:
+    input:
+      fill: "#dbeafe"
+      border: "#2563eb"
+      text: "#0f172a"
+    genetics:
+      fill: "#e0f2fe"
+      border: "#0284c7"
+      text: "#0f172a"
+    molecular:
+      fill: "#cffafe"
+      border: "#0891b2"
+      text: "#0f172a"
+    biology:
+      fill: "#dcfce7"
+      border: "#16a34a"
+      text: "#0f172a"
+    integration:
+      fill: "#fef3c7"
+      border: "#d97706"
+      text: "#0f172a"
+    output:
+      fill: "#ede9fe"
+      border: "#7c3aed"
+      text: "#0f172a"
+    neutral:
+      fill: "#f1f5f9"
+      border: "#64748b"
+      text: "#334155"
+
+defaults:
+  graph:
+    bgcolor: "#f8fafc"
+    color: "#cbd5e1"
+    fontname: "Arial"
+    nodesep: "0.55"
+    ranksep: "0.75"
+    splines: "ortho"
+  node:
+    shape: "rect"
+    style: "rounded,filled"
+    penwidth: "1.8"
+    margin: "0.16,0.10"
+    fontname: "Arial"
+    fontsize: "13"
+  edge:
+    color: "#94a3b8"
+    penwidth: "1.8"
+    arrowsize: "0.8"
+    fontname: "Arial"
+    fontsize: "11"
